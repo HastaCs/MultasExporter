@@ -56,6 +56,7 @@ namespace MultasExporter
     private string GetMarcaVehiculo() => _extractorMulta.GetMarcaVehiculo();
     private string GetClaseVehiculo() => _extractorMulta.GetClaseVehiculo();
     private string GetModeloVehiculo() => _extractorMulta.GetModeloVehiculo();
+    private decimal GetImporte() => _extractorMulta.GetImporte();
     public MultaDTO GetDatos()
     {
       return new MultaDTO
@@ -71,7 +72,8 @@ namespace MultasExporter
         ExpedienteMulta = GetExpediente(),
         Emisor = GetEmisor(),
         MotivoMulta = GetMotivoMulta(),
-        LugarMulta = GetLugarMulta()
+        LugarMulta = GetLugarMulta(),
+        ImportMulta=GetImporte()
       };
     }
   }

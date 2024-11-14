@@ -20,24 +20,50 @@ namespace MultasConsola
       return pngByte;
     }
 
-    //static String tesseractData = "/tessdata";
-    static async Task Main(string[] args)
+
+
+
+    public static async Task ProcesaPdf(string folderPath,string file)
     {
-      Console.OutputEncoding = Encoding.UTF8;
-    
-      var dd = await File.ReadAllBytesAsync("pdf/DGT.pdf");
+      var dd = await File.ReadAllBytesAsync(file);
       var extractor = new ExtractorMulta(dd);
       var datos = extractor.GetDatos();
 
-      //Para los acentos, sino el serialize se ralla
       var options1 = new JsonSerializerOptions
       {
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.All),
         WriteIndented = true
       };
       var objetoComoJson = JsonSerializer.Serialize(datos, options1);
+      string fileName = Path.GetFileNameWithoutExtension(file);
 
-      Console.WriteLine(objetoComoJson);
+      // Define el path del nuevo archivo .txt
+      string txtFilePath = Path.Combine(folderPath, fileName + ".txt");
+
+      // Escribe "hola" dentro del archivo .txt
+      await File.WriteAllTextAsync(txtFilePath, objetoComoJson);
+    }
+
+
+    //static String tesseractData = "/tessdata";
+    static async Task Main(string[] args)
+    {
+      Console.OutputEncoding = Encoding.UTF8;
+      string folderPath = @"D:\pdfsMultas";
+      string[] files = Directory.GetFiles(folderPath);
+
+      var tasks=new List<Task>();
+
+      // Recorre y muestra el path de cada archivo
+      foreach (var file in files)
+      {
+        tasks.Add(ProcesaPdf(folderPath, file));
+
+       
+      }
+      Task.WaitAll(tasks.ToArray());
+
+    
     
       #region a
       /*

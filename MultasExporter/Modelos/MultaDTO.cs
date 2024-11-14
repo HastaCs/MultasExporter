@@ -26,7 +26,7 @@ namespace MultasExporter.Modelos
     public required EmisorDTO Emisor { get; set; }
     public string MotivoMulta { get; set; }
     public string LugarMulta { get; set; }
-    public decimal ImportMulta { get; set; }
+    public required decimal ImportMulta { get; set; }
 
   }
 }

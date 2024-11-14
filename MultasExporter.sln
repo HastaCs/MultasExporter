@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultasConsola", "MultasConsola\MultasConsola.csproj", "{47AEDA98-06EE-488B-BEFC-8C83FCDDDE07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultasConsola", "MultasConsola\MultasConsola.csproj", "{47AEDA98-06EE-488B-BEFC-8C83FCDDDE07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultasExporter", "MultasExporter\MultasExporter.csproj", "{4290AAFE-59FA-4482-87F5-7B9F7E24622D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultasExporter", "MultasExporter\MultasExporter.csproj", "{4290AAFE-59FA-4482-87F5-7B9F7E24622D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{654D4B6D-E190-4126-B92E-286E66F72647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4290AAFE-59FA-4482-87F5-7B9F7E24622D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4290AAFE-59FA-4482-87F5-7B9F7E24622D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4290AAFE-59FA-4482-87F5-7B9F7E24622D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{654D4B6D-E190-4126-B92E-286E66F72647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{654D4B6D-E190-4126-B92E-286E66F72647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{654D4B6D-E190-4126-B92E-286E66F72647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{654D4B6D-E190-4126-B92E-286E66F72647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

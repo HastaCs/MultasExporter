@@ -34,6 +34,7 @@ namespace MultasExporter
     public string GetMarcaVehiculo();
     public string GetClaseVehiculo();
     public string GetModeloVehiculo();
+    public decimal GetImporte();
    
 
   }

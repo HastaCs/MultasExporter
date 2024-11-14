@@ -80,17 +80,24 @@ namespace MultasExporter.Extractores
 
     public string GetMarcaVehiculo()
     {
-      throw new NotImplementedException();
+      return "";
     }
 
     public string GetClaseVehiculo()
     {
-      throw new NotImplementedException();
+      return "";
     }
 
     public string GetModeloVehiculo()
     {
-      throw new NotImplementedException();
+      return "";
+    }
+
+    public decimal GetImporte()
+    {
+      var importe=Convert.ToDecimal( GetDato(new Rect(750,621,218,50)).Replace(".",","));
+
+      return 0;
     }
   }
 }
