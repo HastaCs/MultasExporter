@@ -74,30 +74,35 @@ namespace MultasExporter.Extractores
 
     public string GetLugarMulta()
     {
-      var lugar= GetDato(new Rect(146, 1036, 992, 166));
-           return lugar;
+      var lugar = GetDato(new Rect(146, 1036, 992, 166));
+      return lugar;
     }
 
     public string GetMarcaVehiculo()
     {
-      return "";
+      var marca = GetDato(new Rect(338,846,650,48));
+      return marca;
     }
 
     public string GetClaseVehiculo()
     {
-      return "";
+      var clase = GetDato(new Rect(320,804,672,48));
+      return clase;
     }
 
     public string GetModeloVehiculo()
     {
-      return "";
+      var modelo = GetDato(new Rect(362,886,628,58));
+      return modelo;
     }
 
     public decimal GetImporte()
     {
-      var importe=Convert.ToDecimal( GetDato(new Rect(750,621,218,50)).Replace(".",","));
+      var importe = GetDato(new Rect(750, 621, 218, 50));
+      decimal result = decimal.Parse(importe, System.Globalization.CultureInfo.InvariantCulture);
 
-      return 0;
+
+      return result;
     }
   }
 }
