@@ -9,34 +9,17 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  public class DGT : IMulta
+  public class DGT : ExtractorBase,  IExtractor
   {
-    private byte[] _multaImagen { get; set; }
-    public bool Match(byte[] multaFichero)
-    {
-      //TODO hacer comprobaciones de que es multa de DGT
-      return true;
-    }
+    
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="imageBytes"></param>
-    public void SetFicheroMulta(byte[] imagenMulta)
+    public bool Match()
     {
-      _multaImagen = imagenMulta;
+      var ayto = new Rect(225,383,774,57);
+      var match = GetDato(ayto).ToUpper();
+      return GetDato(ayto).ToUpper() == "CENTRO DE TRATAMIENTO DE DENUNCIAS AUTOMATIZADAS";
     }
-
-    private string GetDato(Rect rect)
-    {
-      var image = Pix.LoadFromMemory(_multaImagen);
-      using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
-      using (var page = engine.Process(image, rect))
-      {
-        // Obtener el texto extraído
-        return page.GetText().Trim().Trim('\n');
-      }
-    }
+   
 
     public string GetMatricula()
     {
@@ -103,6 +86,11 @@ namespace MultasExporter.Extractores
 
 
       return result;
+    }
+
+    void IExtractor.SetFichero(byte[] imagenBytes)
+    {
+      base.SetFichero(imagenBytes);
     }
   }
 }

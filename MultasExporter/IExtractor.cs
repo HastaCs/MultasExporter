@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MultasExporter
 {
-  public interface IMulta
+  public interface IExtractor
   {
     /// <summary>
     /// El pdf que he subido corresponde a esta implementacion
@@ -15,8 +15,8 @@ namespace MultasExporter
     /// </summary>
     /// <returns></returns>
     /// TODO Por performance tal vez seria mejor pasarle una Image directamente.
-    public bool Match(byte[] multa);
-    public void SetFicheroMulta(byte[] pdfBytes);
+    public bool Match();
+    public void SetFichero(byte[] imagenBytes);
     /// <summary>
     /// Recupera la matricula f
     /// </summary>

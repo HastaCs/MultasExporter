@@ -12,38 +12,41 @@ namespace MultasExporter
 {
   public enum Emisor
   {
-    Dgt = 1
+    Dgt = 1, AytoAlicante
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
   /// </summary>
   public class ExtractorMulta
   {
-    private IMulta _extractorMulta { get; set; }
-    private List<IMulta> _extractores = new List<IMulta> { new DGT() };
+    private IExtractor _extractorMulta { get; set; }
+    private List<IExtractor> _extractores = new List<IExtractor> { new DGT(), new Ayt_Alicante() };
 
     public ExtractorMulta(byte[] multaFichero)
     {
-      _extractorMulta = DeterminarExtractor(multaFichero);
+      var extractor= DeterminarExtractor(multaFichero);
+      if (extractor == null)
+        throw new Exception("No se ha encontrado ningun extractor");
+      _extractorMulta = extractor;
     }
 
 
     /// <summary>
     /// Método para determinar el extractor adecuado según el contenido del PDF
     /// </summary>
-    private IMulta DeterminarExtractor(byte[] multaFichero)
+    private IExtractor? DeterminarExtractor(byte[] multaFichero)
     {
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
       foreach (var extractor in _extractores)
       {
-        if (extractor.Match(pngByte))
+        extractor.SetFichero(pngByte);
+        if (extractor.Match())
         {
-          extractor.SetFicheroMulta(pngByte);
           return extractor;
         }
 
       }
-      throw new Exception("No se ha encontrado ningun extractor");
+      return null;
     }
 
 
@@ -73,7 +76,7 @@ namespace MultasExporter
         Emisor = GetEmisor(),
         MotivoMulta = GetMotivoMulta(),
         LugarMulta = GetLugarMulta(),
-        ImportMulta=GetImporte()
+        ImportMulta = GetImporte()
       };
     }
   }

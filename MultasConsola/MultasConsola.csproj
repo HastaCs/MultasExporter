@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="pdf\alc.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="pdf\DGT.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

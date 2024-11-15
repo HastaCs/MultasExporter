@@ -1,6 +1,7 @@
 ﻿using MultasExporter;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -21,7 +22,18 @@ namespace MultasConsola
     }
 
 
+    public static void GuardaImagen(string path,string pathDestino)
+    {
+      var dd =  File.ReadAllBytes(path);
+      byte[] imageData = Freeware.Pdf2Png.Convert(dd, 1);
 
+
+      // Especifica la ruta donde quieres guardar el archivo.
+      string rutaArchivo = pathDestino;
+
+      // Guarda el byte[] como un archivo .png.
+      File.WriteAllBytes(rutaArchivo, imageData);
+    }
 
     public static async Task ProcesaPdf(string folderPath,string file)
     {
@@ -45,25 +57,21 @@ namespace MultasConsola
     }
 
 
+
+
     //static String tesseractData = "/tessdata";
     static async Task Main(string[] args)
     {
       Console.OutputEncoding = Encoding.UTF8;
       string folderPath = @"D:\pdfsMultas";
-      string[] files = Directory.GetFiles(folderPath);
-
-      var tasks=new List<Task>();
-
-      // Recorre y muestra el path de cada archivo
+      var files = Directory.GetFiles(folderPath).Where(x=>x.EndsWith(".pdf")).ToList();
       foreach (var file in files)
       {
-        tasks.Add(ProcesaPdf(folderPath, file));
-
-       
+        await ProcesaPdf(folderPath, file);
       }
-      Task.WaitAll(tasks.ToArray());
+      
 
-    
+        
     
       #region a
       /*
