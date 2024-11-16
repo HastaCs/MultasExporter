@@ -14,9 +14,11 @@ namespace MultasExporter.Extractores
     protected string GetDato(Rect rect)
     {
       var image = Pix.LoadFromMemory(_multaImagen);
-      using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
+     
+      using (var engine = new TesseractEngine("", "spa", EngineMode.TesseractAndLstm))
       using (var page = engine.Process(image, rect))
       {
+       
         // Obtener el texto extraído
         return page.GetText().Trim().Trim('\n');
       }

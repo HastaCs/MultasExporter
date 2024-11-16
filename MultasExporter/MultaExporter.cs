@@ -12,7 +12,7 @@ namespace MultasExporter
 {
   public enum Emisor
   {
-    Dgt = 1, AytoAlicante
+    Dgt = 1, AytoAlicante,AytoGranada
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -20,7 +20,7 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IExtractor _extractorMulta { get; set; }
-    private List<IExtractor> _extractores = new List<IExtractor> { new DGT(), new Ayt_Alicante() };
+    private List<IExtractor> _extractores = new List<IExtractor> { new DGT(), new Ayt_Alicante(),new Ayt_Granada() };
 
     public ExtractorMulta(byte[] multaFichero)
     {

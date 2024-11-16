@@ -67,52 +67,10 @@ namespace MultasConsola
       var files = Directory.GetFiles(folderPath).Where(x=>x.EndsWith(".pdf")).ToList();
       foreach (var file in files)
       {
+       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
         await ProcesaPdf(folderPath, file);
       }
-      
-
-        
     
-      #region a
-      /*
-      Stopwatch stopwatch = new Stopwatch();
-      stopwatch.Start();
-
-      var dd = File.ReadAllBytes("pdf/DGT.pdf");
-      byte[] pngByte = Freeware.Pdf2Png.Convert(dd, 1);
-
-
-      // Crear una instancia del motor de OCR con el idioma "eng" (inglés)
-      using (var ocrEngine = new TesseractEngine("", "spa", EngineMode.Default))
-      {
-        var image = Pix.LoadFromMemory(pngByte);
-        var rect = new Rect(500, 544, 358, 62);
-        // Procesar la imagen
-
-        using (var page = ocrEngine.Process(image, rect))
-        {
-          // Obtener el texto extraído
-          var identificador = page.GetText().Replace("\n", "");
-          Console.WriteLine(page.GetText().Trim());
-        }
-        rect = new Rect(794, 762, 194, 42);
-        using (var page = ocrEngine.Process(image, rect))
-        {
-          // Obtener el texto extraído
-          var matricula = page.GetText().Replace("\n", "");
-          Console.WriteLine(page.GetText().Trim());
-        }
-        rect = new Rect(162, 1788, 2079, 174);
-        using (var page = ocrEngine.Process(image, rect))
-        {
-          // Obtener el texto extraído
-          var motivo = page.GetText().Replace("\n", "");
-          Console.WriteLine(page.GetText().Trim());
-        }
-        stopwatch.Stop();
-        Console.WriteLine(stopwatch.Elapsed.TotalSeconds + " segundos");
-      }*/
-      #endregion
     }
   }
 }

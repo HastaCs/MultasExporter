@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace MultasExporter.Modelos
 {
-  public class EmisorDTO
+  public record EmisorDTO
   {
     public string Nombre { get; set; }
     public Emisor Id { get; set; }
   }
-  public class Vehiculo
+  public record Vehiculo
   {
     public string Matricula { get; set; }
     public string Marca { get; set; }
     public string Clase { get; set; }
     public string Modelo { get; set; }
   }
-  public class MultaDTO
+  public record MultaDTO
   {
   public required Vehiculo Vehiculo { get; set; }
     public required DateTime FechaMulta { get; set; }
