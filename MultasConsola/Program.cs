@@ -70,8 +70,8 @@ namespace MultasConsola
       var files = Directory.GetFiles(folderPath).Where(x=>x.EndsWith(".pdf")).ToList();
       foreach (var file in files)
       {
-        GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
-     //   await ProcesaPdf(folderPath, file);
+       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
+        await ProcesaPdf(folderPath, file);
       }
       Console.WriteLine(DateTime.Now);
 

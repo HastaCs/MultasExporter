@@ -1,6 +1,7 @@
 ﻿using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,8 +30,11 @@ namespace MultasExporter.Extractores
 
     public string GetExpediente()
     {
+    
       var expediente = new Rect(1896,198,395,59);
+
       return GetDato(expediente).Replace(" ","");
+     
     }
 
     public DateTime GetFechaMulta()
@@ -80,8 +84,10 @@ namespace MultasExporter.Extractores
     }
 
     public bool Match()
-    {     
+    {
+      Console.WriteLine("match alicante");
       var ayto = new Rect(111,246,662,54);
+      Console.WriteLine("fin match alicante");
       return GetDato(ayto) == "EXCMO. AYUNTAMIENTO DE ALICANTE";
     }
   

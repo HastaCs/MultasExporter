@@ -2,18 +2,20 @@
 using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tesseract;
+using UglyToad.PdfPig;
 
 namespace MultasExporter
 {
   public enum Emisor
   {
-    Dgt = 1, AytoAlicante,AytoGranada
+    Dgt = 1, AytoAlicante, AytoGranada, AytoValencia,DipMalaga
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -21,11 +23,26 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(),new DGT(), new Ayt_Alicante()  };
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(),new Dip_Malaga() };
 
     public ExtractorMulta(byte[] multaFichero)
     {
-      var extractor= DeterminarExtractor(multaFichero);
+      /* Console.WriteLine("empiezo PIG----" + DateTime.Now);
+
+       using (var pdfDocument = PdfDocument.Open(multaFichero))
+       {
+         string texto = "";
+         foreach (var page in pdfDocument.GetPages())
+         {
+           texto += page.Text + Environment.NewLine;
+         }
+
+         Console.WriteLine(texto);
+       }
+       Console.WriteLine("terino string" + DateTime.Now);*/
+      var extractor = DeterminarExtractorFromString(multaFichero);
+      if (extractor == null)
+        extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
         throw new Exception("No se ha encontrado ningun extractor");
       _extractorMulta = extractor;
@@ -39,45 +56,68 @@ namespace MultasExporter
     {
       Console.WriteLine("convert");
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
-      
-   
+
+
       Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
-      
-              
+
+
       // using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
       {
-          foreach (var extractor in _extractoresPdf)
-          {
-            //TODO Intenar hacer la busqueda del extractor con Tasks y con un WhenAny
-            //TODO cada Iextractor debe tener el rect que tengo que inspeccionar, y el texto que tiene que haber
-            /* var rectMulta = new Rect(794, 762, 194, 42);
-             using (var page = engine.Process(pix, rectMulta))
-             {
-               Console.WriteLine("chek extractor");
-               var ee = page.GetText();
-             }*/
+        foreach (var extractor in _extractoresPdf)
+        {
+          //TODO Intenar hacer la busqueda del extractor con Tasks y con un WhenAny
+          //TODO cada Iextractor debe tener el rect que tengo que inspeccionar, y el texto que tiene que haber
+          /* var rectMulta = new Rect(794, 762, 194, 42);
+           using (var page = engine.Process(pix, rectMulta))
+           {
+             Console.WriteLine("chek extractor");
+             var ee = page.GetText();
+           }*/
 
-            //  Console.WriteLine("set fichero "+DateTime.Now);
-            extractor.SetPix(pix);
-            //  Console.WriteLine("fin fichero "+DateTime.Now);
-            var encontrado = extractor.Match();
-            //  Console.WriteLine("fin fichero " + DateTime.Now);
-            if (encontrado)
-            {
-              return extractor;
-            }
+          Console.WriteLine("set extractor " + extractor.GetType());
+          extractor.SetPix(pix);
+          //  Console.WriteLine("fin fichero "+DateTime.Now);
+          var encontrado = extractor.Match();
+          //  Console.WriteLine("fin fichero " + DateTime.Now);
+          if (encontrado)
+          {
+            return extractor;
           }
-        
+        }
+
       }
-    /*  var extractorEE = _extractores.Last();
-      extractorEE.SetFichero(pngByte);
-      Console.WriteLine("extractores "+_extractores.Count());
-      return extractorEE;*/
+      /*  var extractorEE = _extractores.Last();
+        extractorEE.SetFichero(pngByte);
+        Console.WriteLine("extractores "+_extractores.Count());
+        return extractorEE;*/
       return null;
     }
 
+    private IDatos? DeterminarExtractorFromString(byte[] multaFichero)
+    {
+      return null;
+      /* string texto = "";
+       using (var pdfDocument = PdfDocument.Open(multaFichero))
+       {
 
+         foreach (var page in pdfDocument.GetPages())
+         {
+           texto += page.Text + Environment.NewLine;
+         }
+
+       }
+       Console.WriteLine("extractof rom string");
+       var extractor = new Ayt_Valencia();
+
+       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
+       Console.WriteLine("extractof rom string FIN");
+
+       var pix = Pix.LoadFromMemory(pngByte);
+       extractor.SetPix(pix);
+       Console.WriteLine("FIN");
+       return extractor;*/
+    }
     private string GetMatricula() => _extractorMulta.GetMatricula().Trim();
     private DateTime GetFechaMulta() => _extractorMulta.GetFechaMulta();
     private string GetExpediente() => _extractorMulta.GetExpediente().Trim();
