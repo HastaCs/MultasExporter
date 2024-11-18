@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -62,15 +63,18 @@ namespace MultasConsola
     //static String tesseractData = "/tessdata";
     static async Task Main(string[] args)
     {
+   
+      Console.WriteLine(DateTime.Now);
       Console.OutputEncoding = Encoding.UTF8;
       string folderPath = @"D:\pdfsMultas";
       var files = Directory.GetFiles(folderPath).Where(x=>x.EndsWith(".pdf")).ToList();
       foreach (var file in files)
       {
-       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
-        await ProcesaPdf(folderPath, file);
+        GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
+     //   await ProcesaPdf(folderPath, file);
       }
-    
+      Console.WriteLine(DateTime.Now);
+
     }
   }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Tesseract;
 
 namespace MultasExporter
 {
@@ -20,7 +21,7 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IExtractor _extractorMulta { get; set; }
-    private List<IExtractor> _extractores = new List<IExtractor> { new DGT(), new Ayt_Alicante(),new Ayt_Granada() };
+    private List<IExtractor> _extractores = new List<IExtractor> { new Ayt_Granada(),new DGT(), new Ayt_Alicante()  };
 
     public ExtractorMulta(byte[] multaFichero)
     {
@@ -36,16 +37,43 @@ namespace MultasExporter
     /// </summary>
     private IExtractor? DeterminarExtractor(byte[] multaFichero)
     {
+      Console.WriteLine("convert");
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
-      foreach (var extractor in _extractores)
+      
+   
+      Console.WriteLine("convert fin");
+      var pix = Pix.LoadFromMemory(pngByte);
+      
+              
+      // using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
       {
-        extractor.SetFichero(pngByte);
-        if (extractor.Match())
-        {
-          return extractor;
-        }
+          foreach (var extractor in _extractores)
+          {
+            //TODO Intenar hacer la busqueda del extractor con Tasks y con un WhenAny
+            //TODO cada Iextractor debe tener el rect que tengo que inspeccionar, y el texto que tiene que haber
+            /* var rectMulta = new Rect(794, 762, 194, 42);
+             using (var page = engine.Process(pix, rectMulta))
+             {
+               Console.WriteLine("chek extractor");
+               var ee = page.GetText();
+             }*/
 
+            //  Console.WriteLine("set fichero "+DateTime.Now);
+            extractor.SetFichero(pix);
+            //  Console.WriteLine("fin fichero "+DateTime.Now);
+            var encontrado = extractor.Match();
+            //  Console.WriteLine("fin fichero " + DateTime.Now);
+            if (encontrado)
+            {
+              return extractor;
+            }
+          }
+        
       }
+    /*  var extractorEE = _extractores.Last();
+      extractorEE.SetFichero(pngByte);
+      Console.WriteLine("extractores "+_extractores.Count());
+      return extractorEE;*/
       return null;
     }
 

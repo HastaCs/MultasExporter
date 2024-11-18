@@ -1,6 +1,7 @@
 ﻿using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,11 @@ namespace MultasExporter.Extractores
     {
       var recFecha = new Rect(325, 228, 324, 33);
       var recHora = new Rect(659, 228, 110, 30);
-      return Convert.ToDateTime(GetDato(recFecha) + " " + GetDato(recHora));
+      var fecha = GetDato(recFecha);
+      var hora = GetDato(recHora);
+      var fechaHora = fecha + " " + hora;
+      return Convert.ToDateTime(fechaHora);
+
 
     }
 
@@ -82,9 +87,9 @@ namespace MultasExporter.Extractores
       return texto == "EXCMO. AYUNTAMIENTODE GRANADA";
     }
 
-    void IExtractor.SetFichero(byte[] imagenBytes)
+    void IExtractor.SetFichero(Pix pixImagen)
     {
-      base.SetFichero(imagenBytes);
+      base.SetFichero(pixImagen);
     }
   }
 }

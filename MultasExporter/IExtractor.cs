@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tesseract;
 
 namespace MultasExporter
 {
@@ -16,7 +17,7 @@ namespace MultasExporter
     /// <returns></returns>
     /// TODO Por performance tal vez seria mejor pasarle una Image directamente.
     public bool Match();
-    public void SetFichero(byte[] imagenBytes);
+    public void SetFichero(Pix pixImagen);
     /// <summary>
     /// Recupera la matricula f
     /// </summary>

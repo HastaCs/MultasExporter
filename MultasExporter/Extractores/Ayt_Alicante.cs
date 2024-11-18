@@ -85,7 +85,7 @@ namespace MultasExporter.Extractores
       return GetDato(ayto) == "EXCMO. AYUNTAMIENTO DE ALICANTE";
     }
    
-    public void SetFichero(byte[] imagenBytes)
+    public void SetFichero(Pix imagenBytes)
     {
       base.SetFichero(imagenBytes);
     }

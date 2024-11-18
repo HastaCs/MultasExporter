@@ -16,7 +16,7 @@ namespace MultasExporter.Extractores
     public bool Match()
     {
       var ayto = new Rect(225,383,774,57);
-      var match = GetDato(ayto).ToUpper();
+     
       return GetDato(ayto).ToUpper() == "CENTRO DE TRATAMIENTO DE DENUNCIAS AUTOMATIZADAS";
     }
    
@@ -88,9 +88,9 @@ namespace MultasExporter.Extractores
       return result;
     }
 
-    void IExtractor.SetFichero(byte[] imagenBytes)
+    void IExtractor.SetFichero(Pix pixImagen)
     {
-      base.SetFichero(imagenBytes);
+      base.SetFichero(pixImagen);
     }
   }
 }
