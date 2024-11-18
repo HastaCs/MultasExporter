@@ -9,7 +9,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  internal class Ayt_Granada : ExtractorBase, IExtractor
+  internal class Ayt_Granada : ExtractorBase, IExtractorPdf
   {
     public string GetClaseVehiculo()
     {
@@ -87,9 +87,11 @@ namespace MultasExporter.Extractores
       return texto == "EXCMO. AYUNTAMIENTODE GRANADA";
     }
 
-    void IExtractor.SetFichero(Pix pixImagen)
+    public void SetPix(Pix pixImagen)
     {
       base.SetFichero(pixImagen);
     }
+
+   
   }
 }

@@ -8,7 +8,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  public class Ayt_Alicante :ExtractorBase, IExtractor
+  public class Ayt_Alicante :ExtractorBase, IExtractorPdf
   {
    
     public string GetClaseVehiculo()
@@ -84,10 +84,10 @@ namespace MultasExporter.Extractores
       var ayto = new Rect(111,246,662,54);
       return GetDato(ayto) == "EXCMO. AYUNTAMIENTO DE ALICANTE";
     }
-   
-    public void SetFichero(Pix imagenBytes)
+  
+    public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(imagenBytes);
+      base.SetFichero(pixImagen);
     }
   }
 }

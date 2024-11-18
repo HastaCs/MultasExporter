@@ -9,7 +9,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  public class DGT : ExtractorBase,  IExtractor
+  public class DGT : ExtractorBase,  IExtractorPdf
   {
     
 
@@ -88,7 +88,8 @@ namespace MultasExporter.Extractores
       return result;
     }
 
-    void IExtractor.SetFichero(Pix pixImagen)
+
+    public void SetPix(Pix pixImagen)
     {
       base.SetFichero(pixImagen);
     }

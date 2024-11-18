@@ -20,8 +20,8 @@ namespace MultasExporter
   /// </summary>
   public class ExtractorMulta
   {
-    private IExtractor _extractorMulta { get; set; }
-    private List<IExtractor> _extractores = new List<IExtractor> { new Ayt_Granada(),new DGT(), new Ayt_Alicante()  };
+    private IDatos _extractorMulta { get; set; }
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(),new DGT(), new Ayt_Alicante()  };
 
     public ExtractorMulta(byte[] multaFichero)
     {
@@ -35,7 +35,7 @@ namespace MultasExporter
     /// <summary>
     /// Método para determinar el extractor adecuado según el contenido del PDF
     /// </summary>
-    private IExtractor? DeterminarExtractor(byte[] multaFichero)
+    private IDatos? DeterminarExtractor(byte[] multaFichero)
     {
       Console.WriteLine("convert");
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
@@ -47,7 +47,7 @@ namespace MultasExporter
               
       // using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
       {
-          foreach (var extractor in _extractores)
+          foreach (var extractor in _extractoresPdf)
           {
             //TODO Intenar hacer la busqueda del extractor con Tasks y con un WhenAny
             //TODO cada Iextractor debe tener el rect que tengo que inspeccionar, y el texto que tiene que haber
@@ -59,7 +59,7 @@ namespace MultasExporter
              }*/
 
             //  Console.WriteLine("set fichero "+DateTime.Now);
-            extractor.SetFichero(pix);
+            extractor.SetPix(pix);
             //  Console.WriteLine("fin fichero "+DateTime.Now);
             var encontrado = extractor.Match();
             //  Console.WriteLine("fin fichero " + DateTime.Now);

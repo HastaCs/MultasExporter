@@ -8,7 +8,7 @@ using Tesseract;
 
 namespace MultasExporter
 {
-  public interface IExtractor
+  public interface IDatos
   {
     /// <summary>
     /// El pdf que he subido corresponde a esta implementacion
@@ -17,7 +17,7 @@ namespace MultasExporter
     /// <returns></returns>
     /// TODO Por performance tal vez seria mejor pasarle una Image directamente.
     public bool Match();
-    public void SetFichero(Pix pixImagen);
+  
     /// <summary>
     /// Recupera la matricula f
     /// </summary>
