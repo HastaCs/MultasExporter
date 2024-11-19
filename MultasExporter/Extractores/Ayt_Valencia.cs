@@ -1,4 +1,5 @@
 ﻿using MultasExporter.Extractores;
+using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MultasExporter.Extractores
 {
-  public class Ayt_Valencia : ExtractorBase, IExtractorPdf
+    public class Ayt_Valencia : ExtractorBase, IExtractorPdf
   {
     public string GetClaseVehiculo()
     {
@@ -90,7 +91,7 @@ namespace MultasExporter.Extractores
 
     public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(pixImagen);
+      base.SetPix(pixImagen);
     }
   }
 }

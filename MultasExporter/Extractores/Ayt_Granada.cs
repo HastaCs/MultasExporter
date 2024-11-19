@@ -1,4 +1,5 @@
-﻿using MultasExporter.Modelos;
+﻿using MultasExporter.Interfaces;
+using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +10,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  internal class Ayt_Granada : ExtractorBase, IExtractorPdf
+    internal class Ayt_Granada : ExtractorBase, IExtractorPdf
   {
     public string GetClaseVehiculo()
     {
@@ -86,10 +87,14 @@ namespace MultasExporter.Extractores
 
       return texto == "EXCMO. AYUNTAMIENTODE GRANADA";
     }
-
+    /*public string MatchString()
+    {
+      return "DIPUTACIÓN PROVINCIAL DE MÁLAGA";
+    }
+    */
     public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(pixImagen);
+      base.SetPix(pixImagen);
     }
 
    

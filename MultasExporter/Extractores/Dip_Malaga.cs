@@ -1,4 +1,5 @@
 ﻿using MultasExporter.Extractores;
+using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  internal class Dip_Malaga : ExtractorBase, IExtractorPdf
+    internal class Dip_Malaga : ExtractorBase, IExtractorPdf
   {
     public string GetClaseVehiculo()
     {
@@ -90,7 +91,7 @@ namespace MultasExporter.Extractores
 
     public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(pixImagen);
+      base.SetPix(pixImagen);
     }
   }
 }

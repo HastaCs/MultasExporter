@@ -1,4 +1,5 @@
-﻿using MultasExporter.Modelos;
+﻿using MultasExporter.Interfaces;
+using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  public class Ayt_Alicante :ExtractorBase, IExtractorPdf
+    public class Ayt_Alicante :ExtractorBase, IExtractorPdf
   {
    
     public string GetClaseVehiculo()
@@ -93,7 +94,7 @@ namespace MultasExporter.Extractores
   
     public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(pixImagen);
+      base.SetPix(pixImagen);
     }
   }
 }

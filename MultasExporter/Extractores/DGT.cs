@@ -1,4 +1,5 @@
-﻿using MultasExporter.Modelos;
+﻿using MultasExporter.Interfaces;
+using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +10,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores
 {
-  public class DGT : ExtractorBase,  IExtractorPdf
+    public class DGT : ExtractorBase,  IExtractorPdf
   {
     
 
@@ -91,7 +92,7 @@ namespace MultasExporter.Extractores
 
     public void SetPix(Pix pixImagen)
     {
-      base.SetFichero(pixImagen);
+      base.SetPix(pixImagen);
     }
   }
 }

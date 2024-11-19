@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Tesseract;
 
-namespace MultasExporter
+namespace MultasExporter.Interfaces
 {
-  internal interface IFromPix
-  {
-    public void SetPix(Pix pixImagen);
-  }
+    internal interface IFromTexto
+    {
+        public void SetTexto(string texto);
+    }
 }

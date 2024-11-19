@@ -1,4 +1,5 @@
 ﻿using MultasExporter.Extractores;
+using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ using UglyToad.PdfPig;
 
 namespace MultasExporter
 {
-  public enum Emisor
+    public enum Emisor
   {
-    Dgt = 1, AytoAlicante, AytoGranada, AytoValencia,DipMalaga
+    Dgt = 1, AytoAlicante, AytoGranada, AytoValencia,DipMalaga,DipCadiz
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -23,26 +24,26 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(),new Dip_Malaga() };
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(),new Dip_Malaga(),new Dip_Cadiz() };
 
     public ExtractorMulta(byte[] multaFichero)
     {
       /* Console.WriteLine("empiezo PIG----" + DateTime.Now);
-
-       using (var pdfDocument = PdfDocument.Open(multaFichero))
+      string texto = "";
+      using (var pdfDocument = PdfDocument.Open(multaFichero))
        {
-         string texto = "";
-         foreach (var page in pdfDocument.GetPages())
+       
+         foreach (var page in pdfDocument.GetPages().Take(1))
          {
            texto += page.Text + Environment.NewLine;
          }
 
          Console.WriteLine(texto);
        }
-       Console.WriteLine("terino string" + DateTime.Now);*/
-      var extractor = DeterminarExtractorFromString(multaFichero);
-      if (extractor == null)
-        extractor = DeterminarExtractor(multaFichero);
+       Console.WriteLine("terino string" + DateTime.Now);
+      var extractor = DeterminarExtractorFromString(texto);
+      if (extractor == null)*/
+       var extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
         throw new Exception("No se ha encontrado ningun extractor");
       _extractorMulta = extractor;
@@ -94,29 +95,13 @@ namespace MultasExporter
       return null;
     }
 
-    private IDatos? DeterminarExtractorFromString(byte[] multaFichero)
+    private IDatos? DeterminarExtractorFromString(string multaFichero)
     {
       return null;
-      /* string texto = "";
-       using (var pdfDocument = PdfDocument.Open(multaFichero))
-       {
-
-         foreach (var page in pdfDocument.GetPages())
-         {
-           texto += page.Text + Environment.NewLine;
-         }
-
-       }
-       Console.WriteLine("extractof rom string");
-       var extractor = new Ayt_Valencia();
-
-       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
-       Console.WriteLine("extractof rom string FIN");
-
-       var pix = Pix.LoadFromMemory(pngByte);
-       extractor.SetPix(pix);
-       Console.WriteLine("FIN");
-       return extractor;*/
+     /* foreach (var extractor in _extractoresPdf)
+      {
+        if(extractor.mat)
+      }*/
     }
     private string GetMatricula() => _extractorMulta.GetMatricula().Trim();
     private DateTime GetFechaMulta() => _extractorMulta.GetFechaMulta();
