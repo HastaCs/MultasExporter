@@ -17,13 +17,16 @@ namespace MultasExporter.Extractores
     // private TesseractEngine _engine { get; set; }
     protected string GetDato(Rect rect)
     {
-        using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
+      using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
+      {
+        engine.SetVariable("tessedit_char_blacklist", "€");
         using (var page = engine.Process(_pix, rect))
         {
-         
+
           // Obtener el texto extraído
           return page.GetText().Trim().Trim('\n');
         }
+      }
       
     }
     protected void SetPix(Pix pixImagen)

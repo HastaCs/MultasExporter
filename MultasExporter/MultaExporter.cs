@@ -16,7 +16,7 @@ namespace MultasExporter
 {
     public enum Emisor
   {
-    Dgt = 1, AytoAlicante, AytoGranada, AytoValencia,DipMalaga,DipCadiz
+    Dgt = 1, AytoAlicante, AytoGranada, AytoValencia,DipMalaga,DipCadiz,SumaAlicante
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -24,7 +24,7 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(),new Dip_Malaga(),new Dip_Cadiz() };
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(),new Dip_Malaga(),new Dip_Cadiz() ,new Suma_Alicante()};
 
     public ExtractorMulta(byte[] multaFichero)
     {
@@ -43,6 +43,7 @@ namespace MultasExporter
        Console.WriteLine("terino string" + DateTime.Now);
       var extractor = DeterminarExtractorFromString(texto);
       if (extractor == null)*/
+      
        var extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
         throw new Exception("No se ha encontrado ningun extractor");
@@ -103,7 +104,7 @@ namespace MultasExporter
         if(extractor.mat)
       }*/
     }
-    private string GetMatricula() => _extractorMulta.GetMatricula().Trim();
+    private string GetMatricula() => _extractorMulta.GetMatricula().Trim().Replace("O","0").Replace("I","1");
     private DateTime GetFechaMulta() => _extractorMulta.GetFechaMulta();
     private string GetExpediente() => _extractorMulta.GetExpediente().Trim();
     private EmisorDTO GetEmisor() => _extractorMulta.GetEmisor();

@@ -44,7 +44,7 @@ namespace MultasExporter.Extractores
     public decimal GetImporte()
     {
       var rec = new Rect(1416, 848, 328, 62);
-      var importe = GetDato(rec).Replace("€","").Replace(".",",");
+      var importe = GetDato(rec).Replace("E","").Replace(".",",");
       return Convert.ToDecimal(importe);
     }
 

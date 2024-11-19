@@ -42,7 +42,7 @@ namespace MultasExporter.Extractores
     public decimal GetImporte()
     {
       var rec = new Rect(1869, 1140, 204, 53);
-      return Convert.ToDecimal(GetDato(rec).Replace("€", ""));
+      return Convert.ToDecimal(GetDato(rec).Replace("E", ""));
     }
 
     public string GetLugarMulta()

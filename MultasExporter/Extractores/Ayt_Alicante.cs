@@ -42,7 +42,6 @@ namespace MultasExporter.Extractores
     {
       var fechaMulta = new Rect(234, 1065, 485, 50);
       var horaMulta = new Rect(750, 1058, 480, 57);
-
      
       return Convert.ToDateTime(GetDato(fechaMulta) + " " + GetDato(horaMulta));
     }
