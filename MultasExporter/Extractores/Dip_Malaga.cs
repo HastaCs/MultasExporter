@@ -1,6 +1,7 @@
 ﻿using MultasExporter.Extractores;
 using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,7 @@ namespace MultasExporter.Extractores
 
     public EmisorDTO GetEmisor()
     {
-      return new EmisorDTO
-      {
-        Id = Emisor.DipMalaga,
-        Nombre = "Diputación provincial de Málaga"
-      };
+      return Emisor.DipMalaga.ToEmisorDto();
     }
 
     public string GetExpediente()

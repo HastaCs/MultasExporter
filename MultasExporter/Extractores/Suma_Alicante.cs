@@ -1,5 +1,6 @@
 ﻿using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,7 @@ namespace MultasExporter.Extractores
 
     public EmisorDTO GetEmisor()
     {
-      return new EmisorDTO
-      {
-        Id = Emisor.SumaAlicante,
-        Nombre = "Suma Diputación de Alicante"
-      };
+      return Emisor.SumaAlicante.ToEmisorDto();
     }
 
     public string GetExpediente()

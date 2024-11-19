@@ -1,6 +1,7 @@
 ﻿using MultasExporter.Extractores;
 using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,11 +22,7 @@ namespace MultasExporter.Extractores
 
     public EmisorDTO GetEmisor()
     {
-      return new EmisorDTO()
-      {
-        Id = Emisor.AytoValencia,
-        Nombre = "Ayuntamiento de Valencia"
-      };
+      return Emisor.AytoValencia.ToEmisorDto();
     }
 
     public string GetExpediente()

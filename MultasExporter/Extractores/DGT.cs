@@ -1,5 +1,6 @@
 ﻿using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -42,14 +43,7 @@ namespace MultasExporter.Extractores
       return fecha;
     }
 
-    public EmisorDTO GetEmisor()
-    {
-      return new EmisorDTO
-      {
-        Id = Emisor.Dgt,
-        Nombre = "DGT"
-      };
-    }
+    public EmisorDTO GetEmisor() => Emisor.Dgt.ToEmisorDto();
 
     public string GetMotivoMulta()
     {

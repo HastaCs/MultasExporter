@@ -1,5 +1,6 @@
 ﻿using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,16 +19,9 @@ namespace MultasExporter.Extractores
       var clase = new Rect(1839, 953, 449, 52);
       return GetDato(clase);
     }
-   
 
-    public EmisorDTO GetEmisor()
-    {
-      return new EmisorDTO()
-      {
-        Id = Emisor.AytoAlicante,
-        Nombre = "Ayuntamiento de Alicante"
-      };
-    }
+
+    public EmisorDTO GetEmisor() => Emisor.AytoAlicante.ToEmisorDto();
 
     public string GetExpediente()
     {

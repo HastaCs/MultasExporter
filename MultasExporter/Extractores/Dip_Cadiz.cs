@@ -1,5 +1,6 @@
 ﻿using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,7 @@ namespace MultasExporter.Extractores
 
     public EmisorDTO GetEmisor()
     {
-      return new EmisorDTO
-      {
-        Id = Emisor.DipCadiz,
-        Nombre = "Diputación provincial de Cádiz"
-      };
+      return Emisor.DipCadiz.ToEmisorDto();
     }
 
     public string GetExpediente()

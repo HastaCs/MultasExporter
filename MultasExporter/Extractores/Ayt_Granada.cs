@@ -1,9 +1,11 @@
 ﻿using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
+using MultasExporter.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Tesseract;
@@ -17,12 +19,8 @@ namespace MultasExporter.Extractores
       return "";
     }
 
-    public EmisorDTO GetEmisor() =>
-      new EmisorDTO
-      {
-        Id = Emisor.AytoGranada,
-        Nombre = "Ayuntamiento de Granada"
-      };
+    public EmisorDTO GetEmisor() => Emisor.AytoGranada.ToEmisorDto();
+     
 
 
     public string GetExpediente()
