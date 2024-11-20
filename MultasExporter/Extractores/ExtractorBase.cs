@@ -12,13 +12,14 @@ namespace MultasExporter.Extractores
   /// </summary>
   public abstract class ExtractorBase
   {
-    
+
     private Pix _pix { get; set; }
     // private TesseractEngine _engine { get; set; }
     protected string GetDato(Rect rect)
     {
       using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
       {
+        Console.WriteLine("proceso");
         engine.SetVariable("tessedit_char_blacklist", "€");
         using (var page = engine.Process(_pix, rect))
         {
@@ -27,7 +28,7 @@ namespace MultasExporter.Extractores
           return page.GetText().Trim().Trim('\n');
         }
       }
-      
+
     }
     protected void SetPix(Pix pixImagen)
     {

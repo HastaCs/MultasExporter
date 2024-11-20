@@ -44,25 +44,11 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new Ayt_Granada(), new DGT(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante() };
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> {  new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new DGT(), };
 
     public ExtractorMulta(byte[] multaFichero)
     {
-      /* Console.WriteLine("empiezo PIG----" + DateTime.Now);
-      string texto = "";
-      using (var pdfDocument = PdfDocument.Open(multaFichero))
-       {
-       
-         foreach (var page in pdfDocument.GetPages().Take(1))
-         {
-           texto += page.Text + Environment.NewLine;
-         }
-
-         Console.WriteLine(texto);
-       }
-       Console.WriteLine("terino string" + DateTime.Now);
-      var extractor = DeterminarExtractorFromString(texto);
-      if (extractor == null)*/
+      Console.WriteLine("Extractores:" + _extractoresPdf.Count);
 
       var extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
@@ -70,6 +56,78 @@ namespace MultasExporter
       _extractorMulta = extractor;
     }
 
+    private async Task<IExtractorPdf> EjecutarConLimite(IEnumerable<IExtractorPdf> extractores, Pix pix)
+    {
+      int maxConcurrentTasks = 2; // Número máximo de tareas concurrentes
+      var semaphore = new SemaphoreSlim(maxConcurrentTasks); // Controlador de concurrencia
+      var cancellationTokenSource = new CancellationTokenSource();
+      var cancellationToken = cancellationTokenSource.Token;
+
+      var tasks = new List<Task<(IExtractorPdf Extractor, bool Resultado)>>();
+
+      var i = 0;
+      foreach (var extractor in extractores)
+      {
+        Console.WriteLine("__Extractor: " + i++);
+
+        var task = Task.Run(async () =>
+        {
+          await semaphore.WaitAsync(); // Esperar espacio en el semáforo
+
+          // Verificar si la tarea ha sido cancelada antes de procesar
+          if (cancellationToken.IsCancellationRequested)
+          {
+            semaphore.Release();
+            return (Extractor: null, Resultado: false); // Tarea no hace nada si ha sido cancelada
+          }
+
+          try
+          {
+            extractor.SetPix(pix);
+            var resultado = extractor.Match();
+
+            if (resultado)
+            {
+              // Si encontramos un extractor válido, cancelar el resto de las tareas
+              cancellationTokenSource.Cancel();
+            }
+
+            return (Extractor: extractor, Resultado: resultado);
+          }
+          finally
+          {
+            semaphore.Release(); // Liberar semáforo
+          }
+        }, cancellationToken);
+
+        tasks.Add(task);
+      }
+
+      try
+      {
+        // Procesar las tareas y detener cuando se encuentra un extractor válido
+        while (tasks.Count > 0)
+        {
+          var completedTask = await Task.WhenAny(tasks); // Espera sin bloquear el hilo
+          tasks.Remove(completedTask);
+
+          var result = await completedTask;
+          if (result.Resultado)
+          {
+            // Si encontramos un extractor válido, devolvemos inmediatamente
+            Console.WriteLine("Extractor encontrado: " + result.Extractor.GetType());
+            return result.Extractor;
+          }
+        }
+      }
+      catch (OperationCanceledException)
+      {
+        // Las tareas fueron canceladas
+        Console.WriteLine("Tareas canceladas después de encontrar el extractor.");
+      }
+
+      return null; // Si no se encuentra ningún extractor válido
+    }
 
     /// <summary>
     /// Método para determinar el extractor adecuado según el contenido del PDF
@@ -82,38 +140,7 @@ namespace MultasExporter
 
       Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
-
-
-      // using (var engine = new TesseractEngine("", "spa", EngineMode.Default))
-      {
-        foreach (var extractor in _extractoresPdf)
-        {
-          //TODO Intenar hacer la busqueda del extractor con Tasks y con un WhenAny
-          //TODO cada Iextractor debe tener el rect que tengo que inspeccionar, y el texto que tiene que haber
-          /* var rectMulta = new Rect(794, 762, 194, 42);
-           using (var page = engine.Process(pix, rectMulta))
-           {
-             Console.WriteLine("chek extractor");
-             var ee = page.GetText();
-           }*/
-
-          Console.WriteLine("set extractor " + extractor.GetType());
-          extractor.SetPix(pix);
-          //  Console.WriteLine("fin fichero "+DateTime.Now);
-          var encontrado = extractor.Match();
-          //  Console.WriteLine("fin fichero " + DateTime.Now);
-          if (encontrado)
-          {
-            return extractor;
-          }
-        }
-
-      }
-      /*  var extractorEE = _extractores.Last();
-        extractorEE.SetFichero(pngByte);
-        Console.WriteLine("extractores "+_extractores.Count());
-        return extractorEE;*/
-      return null;
+      return EjecutarConLimite(_extractoresPdf,pix).Result;
     }
 
     private IDatos? DeterminarExtractorFromString(string multaFichero)
@@ -134,23 +161,80 @@ namespace MultasExporter
     private string GetClaseVehiculo() => _extractorMulta.GetClaseVehiculo();
     private string GetModeloVehiculo() => _extractorMulta.GetModeloVehiculo();
     private decimal GetImporte() => _extractorMulta.GetImporte();
-    public MultaDTO GetDatos()
+
+
+
+
+
+
+    public async Task<MultaDTO> GetDatos()
     {
+      var tasks = new List<Task>();
+
+      // Crear tareas para cada método
+      var matriculaTask = Task.Run(() => GetMatricula());
+      tasks.Add(matriculaTask);
+     
+      var fechaMultaTask = Task.Run(() => GetFechaMulta());
+      tasks.Add(fechaMultaTask);
+
+      var expedienteTask = Task.Run(() => GetExpediente());
+      tasks.Add(expedienteTask);
+
+      var emisorTask = Task.Run(() => GetEmisor());
+      tasks.Add(emisorTask);
+
+      var motivoMultaTask = Task.Run(() => GetMotivoMulta());
+      tasks.Add(motivoMultaTask);
+
+      var lugarMultaTask = Task.Run(() => GetLugarMulta());
+      tasks.Add(lugarMultaTask);
+
+      var marcaVehiculoTask = Task.Run(() => GetMarcaVehiculo());
+      tasks.Add(marcaVehiculoTask);
+
+      var claseVehiculoTask = Task.Run(() => GetClaseVehiculo());
+      tasks.Add(claseVehiculoTask);
+
+      var modeloVehiculoTask = Task.Run(() => GetModeloVehiculo());
+      tasks.Add(modeloVehiculoTask);
+
+      var importeTask = Task.Run(() => GetImporte());
+      tasks.Add(importeTask);
+
+      // Esperar a que todas las tareas terminen
+      await Task.WhenAll(tasks);
+
+      // Obtener los resultados
+      var matricula = matriculaTask.Result;
+      var fechaMulta = fechaMultaTask.Result;
+      var expediente = expedienteTask.Result;
+      var emisor = emisorTask.Result;
+      var motivoMulta = motivoMultaTask.Result;
+      var lugarMulta = lugarMultaTask.Result;
+      var marcaVehiculo = marcaVehiculoTask.Result;
+      var claseVehiculo = claseVehiculoTask.Result;
+      var modeloVehiculo = modeloVehiculoTask.Result;
+      var importe = importeTask.Result;
+
+
+
+
       return new MultaDTO
       {
         Vehiculo = new Vehiculo
         {
-          Matricula = GetMatricula(),
-          Marca = GetMarcaVehiculo(),
-          Clase = GetClaseVehiculo(),
-          Modelo = GetModeloVehiculo()
+          Matricula = matricula,
+          Marca = marcaVehiculo,
+          Clase = claseVehiculo,
+          Modelo = modeloVehiculo
         },
-        FechaMulta = GetFechaMulta(),
-        ExpedienteMulta = GetExpediente(),
-        Emisor = GetEmisor(),
-        MotivoMulta = GetMotivoMulta(),
-        LugarMulta = GetLugarMulta(),
-        ImportMulta = GetImporte()
+        FechaMulta = fechaMulta,
+        ExpedienteMulta = expediente,
+        Emisor =emisor,
+        MotivoMulta =motivoMulta,
+        LugarMulta = lugarMulta,
+        ImportMulta =importe
       };
     }
   }

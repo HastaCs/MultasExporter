@@ -18,7 +18,7 @@ namespace MultasExporter.Extractores
     public bool Match()
     {
       var ayto = new Rect(225,383,774,57);
-     
+      Console.WriteLine("match DGT Fin_");
       return GetDato(ayto).ToUpper() == "CENTRO DE TRATAMIENTO DE DENUNCIAS AUTOMATIZADAS";
     }
    
@@ -86,6 +86,7 @@ namespace MultasExporter.Extractores
 
     public void SetPix(Pix pixImagen)
     {
+      Console.WriteLine("setpix dgt");
       base.SetPix(pixImagen);
     }
   }

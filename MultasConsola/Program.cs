@@ -40,7 +40,7 @@ namespace MultasConsola
     {
       var dd = await File.ReadAllBytesAsync(file);
       var extractor = new ExtractorMulta(dd);
-      var datos = extractor.GetDatos();
+      var datos =await extractor.GetDatos();
 
       var options1 = new JsonSerializerOptions
       {
@@ -74,6 +74,10 @@ namespace MultasConsola
         await ProcesaPdf(folderPath, file);
       }
       Console.WriteLine(DateTime.Now);
+      var waitHandle = new ManualResetEvent(false);
+
+      // Espera a que se libere el evento (se puede liberar manualmente desde otro hilo)
+      waitHandle.WaitOne();
 
     }
   }
