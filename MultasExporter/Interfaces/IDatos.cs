@@ -15,7 +15,7 @@ namespace MultasExporter.Interfaces
         /// Para que a través del pdf subido sea capaz de detectar a que implementacio corresponde
         /// </summary>
         /// <returns></returns>
-        /// TODO Por performance tal vez seria mejor pasarle una Image directamente.
+     
         public bool Match();
 
         /// <summary>

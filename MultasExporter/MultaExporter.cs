@@ -1,17 +1,14 @@
 ﻿using MultasExporter.Extractores;
+using MultasExporter.Extractores.DePix;
+using MultasExporter.Extractores.DeTexto;
 using MultasExporter.Interfaces;
 using MultasExporter.Modelos;
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
 using Tesseract;
 using UglyToad.PdfPig;
+
 
 namespace MultasExporter
 {
@@ -44,18 +41,22 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> {  new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new Ayt_Alicante(), new Ayt_Valencia(), new Dip_Malaga(), new Dip_Cadiz(), new Suma_Alicante(), new Ayt_Granada(), new DGT(), };
-
+    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new DGT_pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new DGT_pix(), };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new DGT_Texto(),new Suma_Alicante_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
-      Console.WriteLine("Extractores:" + _extractoresPdf.Count);
 
       var extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
         throw new Exception("No se ha encontrado ningun extractor");
       _extractorMulta = extractor;
     }
-
+    /// <summary>
+    /// Para la busqueda de los extractore PIX , que son mas lentos
+    /// </summary>
+    /// <param name="extractores"></param>
+    /// <param name="pix"></param>
+    /// <returns></returns>
     private async Task<IExtractorPdf> EjecutarConLimite(IEnumerable<IExtractorPdf> extractores, Pix pix)
     {
       int maxConcurrentTasks = 2; // Número máximo de tareas concurrentes
@@ -134,23 +135,32 @@ namespace MultasExporter
     /// </summary>
     private IDatos? DeterminarExtractor(byte[] multaFichero)
     {
-      Console.WriteLine("convert");
+      var dgt = new DGT_Texto();
+      using (var pdfDocument = PdfDocument.Open(multaFichero))
+      {
+        var page = pdfDocument.GetPage(1);
+        var words = page.GetWords();
+        if (words.Any())
+        {
+          foreach (var extrator in _extractoresText)
+          {
+            extrator.SetPalabras(words);
+            if (extrator.Match())
+              return extrator;
+          }
+        }
+      }
+      //Si no encuentra ninguno de texto, transforma en imagen y busca
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
-
 
       Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
-      return EjecutarConLimite(_extractoresPdf,pix).Result;
+      return EjecutarConLimite(_extractoresPdf, pix).Result; 
+
+
     }
 
-    private IDatos? DeterminarExtractorFromString(string multaFichero)
-    {
-      return null;
-      /* foreach (var extractor in _extractoresPdf)
-       {
-         if(extractor.mat)
-       }*/
-    }
+   
     private string GetMatricula() => _extractorMulta.GetMatricula().Trim().Replace("O", "0").Replace("I", "1");
     private DateTime GetFechaMulta() => _extractorMulta.GetFechaMulta();
     private string GetExpediente() => _extractorMulta.GetExpediente().Trim();
@@ -163,10 +173,6 @@ namespace MultasExporter
     private decimal GetImporte() => _extractorMulta.GetImporte();
 
 
-
-
-
-
     public async Task<MultaDTO> GetDatos()
     {
       var tasks = new List<Task>();
@@ -174,7 +180,7 @@ namespace MultasExporter
       // Crear tareas para cada método
       var matriculaTask = Task.Run(() => GetMatricula());
       tasks.Add(matriculaTask);
-     
+
       var fechaMultaTask = Task.Run(() => GetFechaMulta());
       tasks.Add(fechaMultaTask);
 
@@ -231,10 +237,10 @@ namespace MultasExporter
         },
         FechaMulta = fechaMulta,
         ExpedienteMulta = expediente,
-        Emisor =emisor,
-        MotivoMulta =motivoMulta,
+        Emisor = emisor,
+        MotivoMulta = motivoMulta,
         LugarMulta = lugarMulta,
-        ImportMulta =importe
+        ImportMulta = importe
       };
     }
   }

@@ -1,31 +1,55 @@
 ﻿using MultasExporter;
+using MultasExporter.Extractores.DeTexto;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IO.Compression;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using Tesseract;
+using UglyToad.PdfPig;
+using UglyToad.PdfPig.Content;
+using UglyToad.PdfPig.Core;
+using UglyToad.PdfPig.Graphics;
 
 namespace MultasConsola
 {
   public class Program
   {
-    public static async Task<byte[]> PruebaAsync(string path)
+  
+
+    public async static Task SacaRectangulos( string file)
     {
-      Console.WriteLine("empiezo");
-      var dd = await File.ReadAllBytesAsync("pdf/DGT.pdf");
-      byte[] pngByte = Freeware.Pdf2Png.Convert(dd, 1);
-      Console.WriteLine("He terminado");
-      return pngByte;
+      using (var pdfDocument = PdfDocument.Open(file))
+      {
+        // Seleccionar la primera página
+        var page = pdfDocument.GetPage(1);
+        var annotations = page.ExperimentalAccess.GetAnnotations().ToList();
+
+
+        var texto = "";
+        foreach (var item in annotations)
+        {
+
+
+          if (item.AnnotationDictionary.Data.TryGetValue("Subj", out var valor))
+          {
+            texto += $"var rec{valor.ToString().Replace("(", "_").Replace(")", "")}=new PdfRectangle({item.Rectangle.BottomLeft.X.ToString().Replace(",", ".")}, {item.Rectangle.BottomLeft.Y.ToString().Replace(",", ".")},{item.Rectangle.TopRight.X.ToString().Replace(",", ".")}, {item.Rectangle.TopRight.Y.ToString().Replace(",", ".")});{Environment.NewLine}";
+            Console.WriteLine(valor?.ToString());
+          }
+
+
+        }
+        await File.WriteAllTextAsync(file+".txt", texto);
+      }
     }
 
-
-    public static void GuardaImagen(string path,string pathDestino)
+      public static void GuardaImagen(string path, string pathDestino)
     {
-      var dd =  File.ReadAllBytes(path);
+      var dd = File.ReadAllBytes(path);
       byte[] imageData = Freeware.Pdf2Png.Convert(dd, 1);
 
 
@@ -36,49 +60,93 @@ namespace MultasConsola
       File.WriteAllBytes(rutaArchivo, imageData);
     }
 
-    public static async Task ProcesaPdf(string folderPath,string file)
+    public static async Task ProcesaPdf(string folderPath, string file)
     {
-      var dd = await File.ReadAllBytesAsync(file);
-      var extractor = new ExtractorMulta(dd);
-      var datos =await extractor.GetDatos();
-
-      var options1 = new JsonSerializerOptions
+    //  using (var pdfDocument = PdfDocument.Open(file))
       {
-        Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.All),
-        WriteIndented = true
-      };
-      var objetoComoJson = JsonSerializer.Serialize(datos, options1);
-      string fileName = Path.GetFileNameWithoutExtension(file);
+        // Seleccionar la primera página
+       // var page = pdfDocument.GetPage(1);
+        var dd = await File.ReadAllBytesAsync(file);
+        var extractor = new ExtractorMulta(dd);
+        var datos = await extractor.GetDatos();
 
-      // Define el path del nuevo archivo .txt
-      string txtFilePath = Path.Combine(folderPath, fileName + ".txt");
+        var options1 = new JsonSerializerOptions
+        {
+          Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.All),
+          WriteIndented = true
+        };
+        var objetoComoJson = JsonSerializer.Serialize(datos, options1);
+        string fileName = Path.GetFileNameWithoutExtension(file);
 
-      // Escribe "hola" dentro del archivo .txt
-      await File.WriteAllTextAsync(txtFilePath, objetoComoJson);
+        // Define el path del nuevo archivo .txt
+        string txtFilePath = Path.Combine(folderPath, fileName + "json.txt");
+
+        // Escribe "hola" dentro del archivo .txt
+        await File.WriteAllTextAsync(txtFilePath, objetoComoJson);
+      }
     }
 
 
+
+    public static async Task ProcesarArchivosAsync(string folderPath, IEnumerable<string> files)
+    {
+      var tasks = files.Select(file => ProcesaPdf(folderPath, file)).ToList();
+      await Task.WhenAll(tasks);
+    }
 
 
     //static String tesseractData = "/tessdata";
     static async Task Main(string[] args)
     {
-   
+      var watch = new Stopwatch();
+      watch.Start();
       Console.WriteLine(DateTime.Now);
       Console.OutputEncoding = Encoding.UTF8;
       string folderPath = @"D:\pdfsMultas";
-      var files = Directory.GetFiles(folderPath).Where(x=>x.EndsWith(".pdf")).ToList();
+    
+     var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
+     // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
+        //await SacaRectangulos(file);
        // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
         await ProcesaPdf(folderPath, file);
       }
+      watch.Stop();
+      Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);
       Console.WriteLine(DateTime.Now);
-      var waitHandle = new ManualResetEvent(false);
-
-      // Espera a que se libere el evento (se puede liberar manualmente desde otro hilo)
-      waitHandle.WaitOne();
-
+      
     }
+
+    public static List<(string NombreArchivo, byte[] Contenido)> LeerPDFsDesdeZIP(string zipPath)
+    {
+      var pdfFiles = new List<(string NombreArchivo, byte[] Contenido)>();
+
+      // Abrir el ZIP para lectura
+      using (var zip = ZipFile.OpenRead(zipPath))
+      {
+        foreach (var entry in zip.Entries)
+        {
+          // Filtrar solo los archivos PDF
+          if (entry.FullName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+          {
+            using (var memoryStream = new MemoryStream())
+            {
+              // Copiar el contenido del PDF en el MemoryStream
+              using (var entryStream = entry.Open())
+              {
+                entryStream.CopyTo(memoryStream);
+              }
+
+              // Guardar el contenido del PDF como byte[] y su nombre
+              pdfFiles.Add((entry.Name, memoryStream.ToArray()));
+            }
+          }
+        }
+      }
+
+      return pdfFiles;
+    }
+
   }
 }

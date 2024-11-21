@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tesseract;
+using UglyToad.PdfPig.Content;
 
 namespace MultasExporter.Interfaces
 {
-    internal interface IFromTexto
+    public interface IFromTexto
     {
-        public void SetTexto(string texto);
+        public void SetPalabras(IEnumerable<Word> palabras);
     }
 }
