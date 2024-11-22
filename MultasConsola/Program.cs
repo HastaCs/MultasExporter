@@ -68,7 +68,7 @@ namespace MultasConsola
        // var page = pdfDocument.GetPage(1);
         var dd = await File.ReadAllBytesAsync(file);
         var extractor = new ExtractorMulta(dd);
-        var datos = await extractor.GetDatos();
+        var datos = await extractor.GetDatosAsync();
 
         var options1 = new JsonSerializerOptions
         {

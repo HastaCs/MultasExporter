@@ -42,7 +42,7 @@ namespace MultasExporter
   {
     private IDatos _extractorMulta { get; set; }
     private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new DGT_pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new DGT_pix(), };
-    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new DGT_Texto(),new Suma_Alicante_Texto(),new Ayt_Valencia_Texto() };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
 
@@ -135,7 +135,6 @@ namespace MultasExporter
     /// </summary>
     private IDatos? DeterminarExtractor(byte[] multaFichero)
     {
-      var dgt = new DGT_Texto();
       using (var pdfDocument = PdfDocument.Open(multaFichero))
       {
         var page = pdfDocument.GetPage(1);
@@ -155,12 +154,12 @@ namespace MultasExporter
 
       Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
-      return EjecutarConLimite(_extractoresPdf, pix).Result; 
+      return EjecutarConLimite(_extractoresPdf, pix).Result;
 
 
     }
 
-   
+
     private string GetMatricula() => _extractorMulta.GetMatricula().Trim().Replace("O", "0").Replace("I", "1");
     private DateTime GetFechaMulta() => _extractorMulta.GetFechaMulta();
     private string GetExpediente() => _extractorMulta.GetExpediente().Trim();
@@ -173,7 +172,7 @@ namespace MultasExporter
     private decimal GetImporte() => _extractorMulta.GetImporte();
 
 
-    public async Task<MultaDTO> GetDatos()
+    public async Task<MultaDTO> GetDatosAsync()
     {
       var tasks = new List<Task>();
 
