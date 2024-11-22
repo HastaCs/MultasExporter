@@ -78,8 +78,10 @@ namespace MultasExporter.Extractores.DeTexto
 
     public bool Match()
     {
-      return base.Match("pago en las Oficinas de Suma");
-     
+      var rec_match = new PdfRectangle(319.02854, 803.782504, 391.006776, 818.035297);
+      var match = GetDato(rec_match);
+      return match == "Modelo";
+
     }
 
     public void SetPalabras(IEnumerable<Word> palabras)

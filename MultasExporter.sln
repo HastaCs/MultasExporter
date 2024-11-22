@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultasConsola", "MultasCons
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultasExporter", "MultasExporter\MultasExporter.csproj", "{4290AAFE-59FA-4482-87F5-7B9F7E24622D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{654D4B6D-E190-4126-B92E-286E66F72647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultasApi", "API\MultasApi.csproj", "{654D4B6D-E190-4126-B92E-286E66F72647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

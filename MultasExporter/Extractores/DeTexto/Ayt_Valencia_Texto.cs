@@ -34,7 +34,7 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var rec_fecha = new PdfRectangle(105.5, 708.321622, 234, 723.5);
       var fecha = GetDato(rec_fecha);
-      return DateTime.Now;
+      return Convert.ToDateTime(fecha);
     }
 
     public decimal GetImporte()
@@ -76,8 +76,11 @@ namespace MultasExporter.Extractores.DeTexto
 
     public bool Match()
     {
-     return base.Match("DENUNCIA SERVICI CENTRAL DEL PROCEDIMENT SANCIONADOR");
-     
+      var rec_match = new PdfRectangle(30.24, 215.5, 193.68, 233);
+      var match = GetDato(rec_match);
+      return match== "https://valencia.gestiondemultas.es/pagament";
+      // return base.Match("DENUNCIA SERVICI CENTRAL DEL PROCEDIMENT SANCIONADOR");
+
     }
 
     public void SetPalabras(IEnumerable<Word> palabras)

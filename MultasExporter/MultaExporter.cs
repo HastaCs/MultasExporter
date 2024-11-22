@@ -42,7 +42,7 @@ namespace MultasExporter
   {
     private IDatos _extractorMulta { get; set; }
     private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new DGT_pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new DGT_pix(), };
-    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto() };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(),new Ayt_Alicante_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
 

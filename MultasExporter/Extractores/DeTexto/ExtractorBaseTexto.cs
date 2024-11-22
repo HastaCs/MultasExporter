@@ -19,12 +19,7 @@ namespace MultasExporter.Extractores.DeWords
     {
       _palabras = palabras;
     }
-
-    public bool Match(string match)
-    {
-      var str = string.Join(" ", _palabras.Select(x => x.Text));
-      return str.Contains(match);
-    }
+       
     public string GetDato(PdfRectangle rect)
     {
       var palabras = _palabras.Where(word =>

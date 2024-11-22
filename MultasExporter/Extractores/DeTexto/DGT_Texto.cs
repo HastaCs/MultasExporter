@@ -80,7 +80,9 @@ namespace MultasExporter.Extractores.DeTexto
 
     public bool Match()
     {
-      return base.Match("Centro de Tratamiento de Denuncias Automatizadas");
+      var rec_match = new PdfRectangle(52, 734, 250, 750);
+      var match = GetDato(rec_match);
+      return match == "Centro de Tratamiento de Denuncias Automatizadas";
 
     }
 
