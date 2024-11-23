@@ -83,9 +83,6 @@ namespace MultasExporter.Extractores.DeTexto
 
     }
 
-    public void SetPalabras(IEnumerable<Word> palabras)
-    {
-      base.Set(palabras);
-    }
+  
   }
 }

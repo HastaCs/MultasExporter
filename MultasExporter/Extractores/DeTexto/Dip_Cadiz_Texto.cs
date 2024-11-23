@@ -85,9 +85,6 @@ namespace MultasExporter.Extractores.DeTexto
       return match == "NOTIFICACIÓN DE DENUNCIA";
     }
 
-    public void SetPalabras(IEnumerable<Word> palabras)
-    {
-      base.Set(palabras);
-    }
+  
   }
 }

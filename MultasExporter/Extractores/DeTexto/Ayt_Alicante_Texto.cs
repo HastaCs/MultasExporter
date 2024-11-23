@@ -84,9 +84,6 @@ namespace MultasExporter.Extractores.DeTexto
       return GetDato(rec_match) == "EXCMO. AYUNTAMIENTO DE ALICANTE";
     }
 
-    public void SetPalabras(IEnumerable<Word> palabras)
-    {
-      base.Set(palabras);
-    }
+   
   }
 }

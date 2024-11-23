@@ -88,9 +88,5 @@ namespace MultasExporter.Extractores.DeTexto
       return match == "EXCMO. AYUNTAMIENTO DE GRANADA";
     }
 
-    public void SetPalabras(IEnumerable<Word> palabras)
-    {
-      base.Set(palabras);
-    }
   }
 }
