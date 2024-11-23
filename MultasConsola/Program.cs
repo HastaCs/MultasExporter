@@ -43,7 +43,7 @@ namespace MultasConsola
 
 
         }
-        await File.WriteAllTextAsync(file+".txt", texto);
+        await File.WriteAllTextAsync(file+"_rectangulos.txt", texto);
       }
     }
 
@@ -79,7 +79,7 @@ namespace MultasConsola
         string fileName = Path.GetFileNameWithoutExtension(file);
 
         // Define el path del nuevo archivo .txt
-        string txtFilePath = Path.Combine(folderPath, fileName + "json.txt");
+        string txtFilePath = Path.Combine(folderPath, fileName + "_json.txt");
 
         // Escribe "hola" dentro del archivo .txt
         await File.WriteAllTextAsync(txtFilePath, objetoComoJson);
@@ -136,8 +136,8 @@ namespace MultasConsola
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
-      //  await SacaRectangulos(file);
-       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
+       // await SacaRectangulos(file);
+      //  GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
        await ProcesaPdf(folderPath, file);
       }
       watch.Stop();

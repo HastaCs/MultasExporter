@@ -11,7 +11,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores.DePix
 {
-    public class DGT_pix : ExtractorBasePix, IExtractorPdf
+    public class DGT_Pix : ExtractorBasePix, IExtractorPdf
     {
 
 

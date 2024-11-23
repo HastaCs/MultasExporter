@@ -26,7 +26,7 @@ namespace MultasExporter.Extractores.DePix
         public string GetExpediente()
         {
             var rec = new Rect(1697, 105, 645, 69);
-            return GetDato(rec);
+            return GetDato(rec).Replace(" ","");
         }
 
         public DateTime GetFechaMulta()
@@ -38,8 +38,8 @@ namespace MultasExporter.Extractores.DePix
 
         public decimal GetImporte()
         {
-            var rec = new Rect(755, 1061, 190, 70);
-            return Convert.ToDecimal(GetDato(rec));
+            var rec = new Rect(99,900,473,59);
+            return Convert.ToDecimal(GetDato(rec).Split(" ")[0]);
         }
 
         public string GetLugarMulta()
