@@ -21,12 +21,12 @@ namespace MultasExporter.Modelos
   public record MultaDTO
   {
   public required Vehiculo Vehiculo { get; set; }
-    public required DateTime FechaMulta { get; set; }
-    public string ExpedienteMulta { get; set; }
+    public required DateTime Fecha { get; set; }
+    public string Expediente { get; set; }
     public required EmisorDTO Emisor { get; set; }
-    public string MotivoMulta { get; set; }
-    public string LugarMulta { get; set; }
-    public required decimal ImportMulta { get; set; }
+    public string Motivo { get; set; }
+    public string Lugar { get; set; }
+    public required decimal Importe { get; set; }
 
   }
 }

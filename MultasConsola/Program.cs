@@ -93,31 +93,6 @@ namespace MultasConsola
       var tasks = files.Select(file => ProcesaPdf(folderPath, file)).ToList();
       await Task.WhenAll(tasks);
     }
-
-
-    //static String tesseractData = "/tessdata";
-    static async Task Main(string[] args)
-    {
-      var watch = new Stopwatch();
-      watch.Start();
-      Console.WriteLine(DateTime.Now);
-      Console.OutputEncoding = Encoding.UTF8;
-      string folderPath = @"D:\pdfsMultas";
-    
-     var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
-     // await ProcesarArchivosAsync(folderPath, files);
-      foreach (var file in files)
-      {
-      //  await SacaRectangulos(file);
-       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
-       await ProcesaPdf(folderPath, file);
-      }
-      watch.Stop();
-      Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);
-      Console.WriteLine(DateTime.Now);
-      
-    }
-
     public static List<(string NombreArchivo, byte[] Contenido)> LeerPDFsDesdeZIP(string zipPath)
     {
       var pdfFiles = new List<(string NombreArchivo, byte[] Contenido)>();
@@ -147,6 +122,31 @@ namespace MultasConsola
 
       return pdfFiles;
     }
+
+    //static String tesseractData = "/tessdata";
+    static async Task Main(string[] args)
+    {
+      var watch = new Stopwatch();
+      watch.Start();
+      Console.WriteLine(DateTime.Now);
+      Console.OutputEncoding = Encoding.UTF8;
+      string folderPath = @"D:\pdfsMultas";
+    
+     var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
+     // await ProcesarArchivosAsync(folderPath, files);
+      foreach (var file in files)
+      {
+      //  await SacaRectangulos(file);
+       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
+       await ProcesaPdf(folderPath, file);
+      }
+      watch.Stop();
+      Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);
+      Console.WriteLine(DateTime.Now);
+      
+    }
+
+   
 
   }
 }
