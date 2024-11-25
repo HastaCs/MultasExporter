@@ -11,7 +11,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores.DePix
 {
-  public class Ayt_Alicante_Pix : ExtractorBasePix, IExtractorPdf
+  public class Ayt_Alicante_Pix : ExtractorBasePix, IExtractorPix
   {
 
     public string GetClaseVehiculo()

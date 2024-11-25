@@ -32,8 +32,15 @@ namespace MultasExporter
 
     [Display(Name = "Diputación provincial de Cádiz")]
     DipCadiz,
+
     [Display(Name = "Suma Diputación de Alicante")]
-    SumaAlicante
+    SumaAlicante,
+
+    [Display(Name = "Ayuntamiento de Madrid")]
+    AytoMadrid,
+
+    [Display(Name = "Ayuntamiento de Fuengirola")]
+    AytoFuengirola
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -41,8 +48,8 @@ namespace MultasExporter
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPdf> _extractoresPdf = new List<IExtractorPdf> { new DGT_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix() };
-    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(),new Ayt_Alicante_Texto() ,new Ayt_Granada_Texto(),new Dip_Cadiz_Texto(),};
+    private List<IExtractorPix> _extractoresPdf = new List<IExtractorPix> { new DGT_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Fuengirola_Pix() };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(), new Ayt_Alicante_Texto(), new Ayt_Granada_Texto(), new Dip_Cadiz_Texto(), new Ayt_Madrid_Texto(), new Ayt_Fuengirola_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
 
@@ -57,14 +64,14 @@ namespace MultasExporter
     /// <param name="extractores"></param>
     /// <param name="pix"></param>
     /// <returns></returns>
-    private async Task<IExtractorPdf> EjecutarConLimite(IEnumerable<IExtractorPdf> extractores, Pix pix)
+    private async Task<IExtractorPix> EjecutarConLimite(IEnumerable<IExtractorPix> extractores, Pix pix)
     {
       int maxConcurrentTasks = 2; // Número máximo de tareas concurrentes
       var semaphore = new SemaphoreSlim(maxConcurrentTasks); // Controlador de concurrencia
       var cancellationTokenSource = new CancellationTokenSource();
       var cancellationToken = cancellationTokenSource.Token;
 
-      var tasks = new List<Task<(IExtractorPdf Extractor, bool Resultado)>>();
+      var tasks = new List<Task<(IExtractorPix Extractor, bool Resultado)>>();
 
       var i = 0;
       foreach (var extractor in extractores)
@@ -137,24 +144,50 @@ namespace MultasExporter
     {
       using (var pdfDocument = PdfDocument.Open(multaFichero))
       {
-        var page = pdfDocument.GetPage(1);
-        var words = page.GetWords();
-        if (words.Any())
+        for (int i = 1; i <= pdfDocument.NumberOfPages && i <= 2; i++)
         {
-          foreach (var extrator in _extractoresText)
+          var page = pdfDocument.GetPage(i);
+          var words = page.GetWords();
+          if (words.Any())
           {
-            extrator.SetPalabras(words);
-            if (extrator.Match())
-              return extrator;
+            foreach (var extrator in _extractoresText)
+            {
+              extrator.SetPalabras(words);
+              if (extrator.Match())
+                return extrator;
+            }
           }
         }
+
       }
       //Si no encuentra ninguno de texto, transforma en imagen y busca
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
 
       Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
-      return EjecutarConLimite(_extractoresPdf, pix).Result;
+
+      //TODO Hacer esto mas bonico
+      //Si no encuentra datos en la pagina 1, busca en la pagina 2
+      var pagina1 = EjecutarConLimite(_extractoresPdf.Where(x => x.PaginaDatos() == 1), pix).Result;
+      if (pagina1 == null)
+      {
+        try
+        {
+          pngByte = Freeware.Pdf2Png.Convert(multaFichero, 2);
+        }
+        catch (Exception er)
+        {
+          Console.WriteLine(er.ToString());
+          return null;
+        }
+
+        Console.WriteLine("convert fin");
+        pix = Pix.LoadFromMemory(pngByte);
+        return EjecutarConLimite(_extractoresPdf.Where(x => x.PaginaDatos() == 2), pix).Result;
+
+      }
+      else
+        return pagina1;
 
 
     }
@@ -175,7 +208,8 @@ namespace MultasExporter
     public async Task<MultaDTO> GetDatosAsync()
     {
       var tasks = new List<Task>();
-
+      var expedienteTask = Task.Run(() => GetExpediente());
+      tasks.Add(expedienteTask);
       // Crear tareas para cada método
       var matriculaTask = Task.Run(() => GetMatricula());
       tasks.Add(matriculaTask);
@@ -183,8 +217,7 @@ namespace MultasExporter
       var fechaMultaTask = Task.Run(() => GetFechaMulta());
       tasks.Add(fechaMultaTask);
 
-      var expedienteTask = Task.Run(() => GetExpediente());
-      tasks.Add(expedienteTask);
+
 
       var emisorTask = Task.Run(() => GetEmisor());
       tasks.Add(emisorTask);

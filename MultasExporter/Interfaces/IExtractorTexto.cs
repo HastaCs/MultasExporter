@@ -9,6 +9,9 @@ namespace MultasExporter.Interfaces
 {
   internal interface IExtractorTexto:IDatos,IFromTexto
   {
-  
+    /// <summary>
+    /// La pagina del pdf donde se encuentran los datos
+    /// </summary>
+    public int PaginaDatos() { return 1; }
   }
 }

@@ -10,7 +10,7 @@ using Tesseract;
 
 namespace MultasExporter.Extractores.DePix
 {
-    internal class Dip_Malaga_Pix : ExtractorBasePix, IExtractorPdf
+    internal class Dip_Malaga_Pix : ExtractorBasePix, IExtractorPix
     {
         public string GetClaseVehiculo()
         {

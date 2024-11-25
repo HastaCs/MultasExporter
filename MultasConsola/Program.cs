@@ -21,12 +21,12 @@ namespace MultasConsola
   {
   
 
-    public async static Task SacaRectangulos( string file)
+    public async static Task SacaRectangulos( string file,int pagina)
     {
       using (var pdfDocument = PdfDocument.Open(file))
       {
         // Seleccionar la primera página
-        var page = pdfDocument.GetPage(1);
+        var page = pdfDocument.GetPage(pagina);
         var annotations = page.ExperimentalAccess.GetAnnotations().ToList();
 
 
@@ -50,7 +50,7 @@ namespace MultasConsola
       public static void GuardaImagen(string path, string pathDestino)
     {
       var dd = File.ReadAllBytes(path);
-      byte[] imageData = Freeware.Pdf2Png.Convert(dd, 1);
+      byte[] imageData = Freeware.Pdf2Png.Convert(dd, 2);
 
 
       // Especifica la ruta donde quieres guardar el archivo.
@@ -136,9 +136,9 @@ namespace MultasConsola
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
-       // await SacaRectangulos(file);
+     //  await SacaRectangulos(file,2);
       //  GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
-       await ProcesaPdf(folderPath, file);
+      await ProcesaPdf(folderPath, file);
       }
       watch.Stop();
       Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);

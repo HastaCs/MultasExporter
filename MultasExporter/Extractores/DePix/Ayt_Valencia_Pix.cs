@@ -12,7 +12,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MultasExporter.Extractores.DePix
 {
-    public class Ayt_Valencia_Pix : ExtractorBasePix, IExtractorPdf
+    public class Ayt_Valencia_Pix : ExtractorBasePix, IExtractorPix
     {
         public string GetClaseVehiculo()
         {
