@@ -142,9 +142,12 @@ namespace MultasExporter
     /// </summary>
     private IDatos? DeterminarExtractor(byte[] multaFichero)
     {
+      //Miramos las dos primeras paginas. 
+      var nPaginas = 0;
       using (var pdfDocument = PdfDocument.Open(multaFichero))
       {
-        for (int i = 1; i <= pdfDocument.NumberOfPages && i <= 2; i++)
+        nPaginas = pdfDocument.NumberOfPages;
+        for (int i = 1; i <= nPaginas && i <= 2; i++)
         {
           var page = pdfDocument.GetPage(i);
           var words = page.GetWords();
@@ -163,28 +166,15 @@ namespace MultasExporter
       //Si no encuentra ninguno de texto, transforma en imagen y busca
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
 
-      Console.WriteLine("convert fin");
       var pix = Pix.LoadFromMemory(pngByte);
 
-      //TODO Hacer esto mas bonico
       //Si no encuentra datos en la pagina 1, busca en la pagina 2
       var pagina1 = EjecutarConLimite(_extractoresPdf.Where(x => x.PaginaDatos() == 1), pix).Result;
-      if (pagina1 == null)
+      if (pagina1 == null && nPaginas > 1)
       {
-        try
-        {
-          pngByte = Freeware.Pdf2Png.Convert(multaFichero, 2);
-        }
-        catch (Exception er)
-        {
-          Console.WriteLine(er.ToString());
-          return null;
-        }
-
-        Console.WriteLine("convert fin");
+        pngByte = Freeware.Pdf2Png.Convert(multaFichero, 2);
         pix = Pix.LoadFromMemory(pngByte);
         return EjecutarConLimite(_extractoresPdf.Where(x => x.PaginaDatos() == 2), pix).Result;
-
       }
       else
         return pagina1;
