@@ -17,17 +17,26 @@ namespace MultasExporter.Extractores.DePix
     // private TesseractEngine _engine { get; set; }
     protected string GetDato(Rect rect)
     {
-      var tessDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
-      using (var engine = new TesseractEngine(tessDataPath, "spa", EngineMode.Default))
+      try
       {
-        Console.WriteLine("proceso");
-        engine.SetVariable("tessedit_char_blacklist", "€");
-        using (var page = engine.Process(_pix, rect))
-        {
 
-          // Obtener el texto extraído
-          return page.GetText().Trim().Trim('\n');
+
+        var tessDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
+        using (var engine = new TesseractEngine(tessDataPath, "spa", EngineMode.Default))
+        {
+          Console.WriteLine("proceso");
+          engine.SetVariable("tessedit_char_blacklist", "€");
+          using (var page = engine.Process(_pix, rect))
+          {
+
+            // Obtener el texto extraído
+            return page.GetText().Trim().Trim('\n');
+          }
         }
+      }
+      catch (Exception)
+      {
+        return "";
       }
 
     }
@@ -38,7 +47,7 @@ namespace MultasExporter.Extractores.DePix
       // _engine = new TesseractEngine("", "spa", EngineMode.Default);
       Console.WriteLine("SETFICHERO b" + DateTime.Now);
     }
-   
+
 
   }
 }
