@@ -47,10 +47,10 @@ namespace MultasConsola
       }
     }
 
-      public static void GuardaImagen(string path, string pathDestino)
+      public static void GuardaImagen(string path, string pathDestino,int pagina)
     {
       var dd = File.ReadAllBytes(path);
-      byte[] imageData = Freeware.Pdf2Png.Convert(dd, 1);
+      byte[] imageData = Freeware.Pdf2Png.Convert(dd, pagina);
 
 
       // Especifica la ruta donde quieres guardar el archivo.
@@ -136,8 +136,8 @@ namespace MultasConsola
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
-     //  await SacaRectangulos(file,1);
-     //   GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png");
+      // await SacaRectangulos(file,2);
+       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",2);
       await ProcesaPdf(folderPath, file);
       }
       watch.Stop();
