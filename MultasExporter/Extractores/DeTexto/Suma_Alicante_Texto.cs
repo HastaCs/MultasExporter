@@ -80,7 +80,8 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var rec_match = new PdfRectangle(319.02854, 803.782504, 391.006776, 818.035297);
       var match = GetDato(rec_match);
-      return match == "Modelo";
+      //A veces lee 'modelo', y otras 'modelo notden'
+      return match.Contains("Modelo");
 
     }
 
