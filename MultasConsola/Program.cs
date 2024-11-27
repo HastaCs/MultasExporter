@@ -130,7 +130,7 @@ namespace MultasConsola
       watch.Start();
       Console.WriteLine(DateTime.Now);
       Console.OutputEncoding = Encoding.UTF8;
-      string folderPath = @"D:\pdfsMultas";
+      string folderPath = @"C:\Users\jorge\Downloads";
     
      var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
      // await ProcesarArchivosAsync(folderPath, files);
