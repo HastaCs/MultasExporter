@@ -137,8 +137,8 @@ namespace MultasConsola
       foreach (var file in files)
       {
       // await SacaRectangulos(file,2);
-       // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",2);
-      await ProcesaPdf(folderPath, file);
+       GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
+      //await ProcesaPdf(folderPath, file);
       }
       watch.Stop();
       Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);

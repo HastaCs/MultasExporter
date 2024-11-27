@@ -15,14 +15,15 @@ namespace MultasExporter.Extractores.DePix
 
     private Pix _pix { get; set; }
     // private TesseractEngine _engine { get; set; }
+      static string tesseractData = "/";
     protected string GetDato(Rect rect)
     {
       try
       {
 
-
-        var tessDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
-        using (var engine = new TesseractEngine(tessDataPath, "spa", EngineMode.Default))
+      
+        //  var tessDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tessdata");
+        using (var engine = new TesseractEngine(tesseractData, "spa", EngineMode.Default))
         {
           Console.WriteLine("proceso");
           engine.SetVariable("tessedit_char_blacklist", "€");
