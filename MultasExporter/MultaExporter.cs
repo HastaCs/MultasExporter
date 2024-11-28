@@ -9,7 +9,7 @@ using System.Diagnostics;
 using Tesseract;
 using UglyToad.PdfPig;
 
-
+//TODO Manejar errores problemdetails en el api
 namespace MultasExporter
 {
   public enum Emisor
