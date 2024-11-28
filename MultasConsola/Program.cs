@@ -130,15 +130,15 @@ namespace MultasConsola
       watch.Start();
       Console.WriteLine(DateTime.Now);
       Console.OutputEncoding = Encoding.UTF8;
-      string folderPath = @"D:\pdfsMultas";
+      string folderPath = @"C:\Users\jorge\Downloads";
     
      var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
-      // await SacaRectangulos(file,1);
+       await SacaRectangulos(file,1);
      //  GuardaImagen(file, $"C:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
-      await ProcesaPdf(folderPath, file);
+      //await ProcesaPdf(folderPath, file);
       }
       watch.Stop();
       Console.WriteLine("Tarda: " + watch.ElapsedMilliseconds);

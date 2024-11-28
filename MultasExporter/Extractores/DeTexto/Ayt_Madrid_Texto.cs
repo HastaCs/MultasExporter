@@ -76,7 +76,10 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var rec_match = new PdfRectangle(11.503866, 818.400025, 90.030253, 847.310191);
       var match = GetDato(rec_match);
-      return match == "MADRID";
+      var rec_match2 = new PdfRectangle(74.344696, 843.224609, 446.953156, 876.865051);
+      var match2 = GetDato(rec_match);
+
+      return match == "MADRID" && match2== "Denuncia por infracción de circulación. Multa";
     }
   }
 }
