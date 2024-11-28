@@ -77,12 +77,10 @@ namespace MultasExporter.Extractores.DePix
         }
 
         public bool Match()
-        {
-            Console.WriteLine("match valencia");
+        {          
             var rect = new Rect(294, 60, 354, 146);
             var valencia = GetDato(rect);
-            Console.WriteLine("fin match ");
-            return valencia == "AJUNTAMENT\nDE VALENCIA";
+                       return valencia == "AJUNTAMENT\nDE VALENCIA";
         }
 
         public void SetPix(Pix pixImagen)

@@ -49,7 +49,9 @@ namespace MultasExporter
     AytoCadiz=65,
 
     [Display(Name = "Ayuntamiento de Murcia")]
-    AytoMurcia=56
+    AytoMurcia=56,
+    [Display(Name = "Ayuntamiento de Sevilla")]
+    AytoSevilla = 46
   }
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
@@ -58,7 +60,7 @@ namespace MultasExporter
   {
     private IDatos _extractorMulta { get; set; }
     private List<IExtractorPix> _extractoresPdf = new List<IExtractorPix> { new DGT_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Fuengirola_Pix(), new DGT2_Pix(), new Ayt_Ibiza_Pix(), new Ayt_Cadiz_Pix() ,new Ayt_Murcia_Pix()};
-    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(), new Ayt_Alicante_Texto(), new Ayt_Granada_Texto(), new Dip_Cadiz_Texto(), new Ayt_Madrid_Texto(), new Ayt_Fuengirola_Texto(), new DGT2_Texto(), new Ayt_Ibiza_Texto(), new Ayt_Cadiz_Texto(),new Ayt_Murcia_Texto() };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(), new Ayt_Alicante_Texto(), new Ayt_Granada_Texto(), new Dip_Cadiz_Texto(), new Ayt_Madrid_Texto(), new Ayt_Fuengirola_Texto(), new DGT2_Texto(), new Ayt_Ibiza_Texto(), new Ayt_Cadiz_Texto(),new Ayt_Murcia_Texto(),new Ayt_Sevilla_Texto(),new Ayt_Sevilla2_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
 
@@ -86,7 +88,7 @@ namespace MultasExporter
       var i = 0;
       foreach (var extractor in extractores)
       {
-        Console.WriteLine("__Extractor: " + i++);
+       
 
         var task = Task.Run(async () =>
         {
