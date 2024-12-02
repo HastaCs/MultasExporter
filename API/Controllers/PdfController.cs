@@ -12,6 +12,10 @@ namespace API.Controllers
     [HttpPost("upload")]
     public async Task<IActionResult> UploadPdf(IFormFile pdf, [FromForm] string key)
     {
+      try
+      {
+
+    
       // Verifica si el archivo PDF fue proporcionado
       if (pdf == null || pdf.Length == 0)
       {
@@ -33,8 +37,13 @@ namespace API.Controllers
 
       var extractor = new ExtractorMulta(fileBytes);
 
-
       return Ok(new { info = await extractor.GetDatosAsync() });
+      }
+      catch (Exception er)
+      {
+        return UnprocessableEntity(new { error =er.Message });
+
+      }
     }
 
     [HttpPost("uploadzip")]

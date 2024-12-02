@@ -34,7 +34,7 @@ namespace MultasExporter.Extractores.DeTexto
     public DateTime GetFechaMulta()
     {
       var rec_fecha = new PdfRectangle(297.6, 779.411958, 435.146219, 816.045018);
-      return Convert.ToDateTime(GetDato(rec_fecha));
+      return Convert.ToDateTime(GetDato(rec_fecha).Replace("DE APERTURA DEL EXPEDIENTE",""));
     }
 
     public decimal GetImporte()
@@ -46,7 +46,8 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetLugarMulta()
     {
       var rec_lugar = new PdfRectangle(25.920001, 713.123564, 276, 742.581126);
-      return GetDato(rec_lugar);
+      var lugar = GetDato(rec_lugar);
+      return lugar;
     }
 
     public string GetMarcaVehiculo()
@@ -57,7 +58,8 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetMatricula()
     {
       var rec_matricula = new PdfRectangle(26.400002, 742.081126, 276.720002, 775.225323);
-      return GetDato(rec_matricula);
+      var mat = GetDato(rec_matricula).Split(" ")[0];
+      return mat;
     }
 
     public string GetModeloVehiculo()
@@ -77,7 +79,7 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_match = new PdfRectangle(11.503866, 818.400025, 90.030253, 847.310191);
       var match = GetDato(rec_match);
       var rec_match2 = new PdfRectangle(74.344696, 843.224609, 446.953156, 876.865051);
-      var match2 = GetDato(rec_match);
+      var match2 = GetDato(rec_match2);
 
       return match == "MADRID" && match2== "Denuncia por infracción de circulación. Multa";
     }
