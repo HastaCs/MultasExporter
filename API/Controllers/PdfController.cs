@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MultasApi.Modelos;
 using MultasExporter;
 using MultasExporter.Modelos;
 
@@ -15,33 +16,33 @@ namespace API.Controllers
       try
       {
 
-    
-      // Verifica si el archivo PDF fue proporcionado
-      if (pdf == null || pdf.Length == 0)
-      {
-        return BadRequest("No se proporcionó un archivo PDF.");
-      }
 
-      // Verifica si la clave fue proporcionada
-      if (string.IsNullOrEmpty(key) || key != "wiber")
-      {
-        return Ok();
-      }
+        // Verifica si el archivo PDF fue proporcionado
+        if (pdf == null || pdf.Length == 0)
+        {
+          return BadRequest("No se proporcionó un archivo PDF.");
+        }
 
-      byte[] fileBytes;
-      using (var memoryStream = new MemoryStream())
-      {
-        await pdf.CopyToAsync(memoryStream);
-        fileBytes = memoryStream.ToArray();
-      }
+        // Verifica si la clave fue proporcionada
+        if (string.IsNullOrEmpty(key) || key != "wiber")
+        {
+          return Ok();
+        }
 
-      var extractor = new ExtractorMulta(fileBytes);
+        byte[] fileBytes;
+        using (var memoryStream = new MemoryStream())
+        {
+          await pdf.CopyToAsync(memoryStream);
+          fileBytes = memoryStream.ToArray();
+        }
 
-      return Ok(new { info = await extractor.GetDatosAsync() });
+        var extractor = new ExtractorMulta(fileBytes);
+
+        return Ok(new { info = await extractor.GetDatosAsync() });
       }
       catch (Exception er)
       {
-        return UnprocessableEntity(new { error =er.Message });
+        return UnprocessableEntity(new { error = er.Message });
 
       }
     }
@@ -67,17 +68,25 @@ namespace API.Controllers
         await pdf.CopyToAsync(memoryStream);
         ficheroZip = memoryStream.ToArray();
       }
-      var multas = Utils.ExtractPdfsFromZip(ficheroZip);
-      var resultado = new List<MultaDTO>();
-      foreach (var multa in multas)
+      var multasPdf = Utils.ExtractPdfsFromZip(ficheroZip);
+      var multasBien = new List<MultaDTO>();
+      var multasMal = new List<MultaErronea>();
+
+      foreach (var multa in multasPdf)
       {
         var res = new ExtractorMulta(multa.Contenido);
-        resultado.Add(await res.GetDatosAsync());
+        try
+        {
+
+          multasBien.Add(await res.GetDatosAsync());
+        }
+        catch (Exception er)
+        {
+          multasMal.Add(new MultaErronea(multa.NombreFichero, er.Message));
+        }
       }
 
-
-
-      return Ok(new { info = resultado });
+      return Ok(new { info = multasBien, errores = multasMal });
     }
 
   }
