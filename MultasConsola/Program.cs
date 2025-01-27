@@ -129,7 +129,7 @@ namespace MultasConsola
       var watch = new Stopwatch();
       watch.Start();
       Console.WriteLine(DateTime.Now);
-      Console.OutputEncoding = Encoding.UTF8;
+    //  Console.OutputEncoding = Encoding.UTF8;
       string folderPath = @"C:\Users\jorge\Downloads";
     
      var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
