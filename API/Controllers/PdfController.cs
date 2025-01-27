@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MultasApi.Modelos;
 using MultasExporter;
 using MultasExporter.Modelos;
+using System.Text.Unicode;
 
 namespace API.Controllers
 {
@@ -16,7 +17,7 @@ namespace API.Controllers
       try
       {
 
-        return Ok("llego");
+       
         // Verifica si el archivo PDF fue proporcionado
         if (pdf == null || pdf.Length == 0)
         {
@@ -37,7 +38,7 @@ namespace API.Controllers
         }
 
         var extractor = new ExtractorMulta(fileBytes);
-
+        return Ok("Llego a extractor");
         return Ok(new { info = await extractor.GetDatosAsync() });
       }
       catch (Exception er)
