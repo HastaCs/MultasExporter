@@ -36,9 +36,9 @@ namespace API.Controllers
           await pdf.CopyToAsync(memoryStream);
           fileBytes = memoryStream.ToArray();
         }
-
+        return Ok("Llego a memorystream");
         var extractor = new ExtractorMulta(fileBytes);
-        return Ok("Llego a extractor");
+       
         return Ok(new { info = await extractor.GetDatosAsync() });
       }
       catch (Exception er)
