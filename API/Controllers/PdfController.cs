@@ -16,7 +16,7 @@ namespace API.Controllers
       try
       {
 
-
+        return Ok("llego");
         // Verifica si el archivo PDF fue proporcionado
         if (pdf == null || pdf.Length == 0)
         {
