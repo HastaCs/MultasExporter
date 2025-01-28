@@ -36,14 +36,17 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var fechaMulta = new PdfRectangle(328.400706, 512.72547, 397.004963, 525.477969);
       var horaMulta = new PdfRectangle(424.371688, 514.225764, 476.480932, 526.228116);
-
-      return Convert.ToDateTime(GetDato(fechaMulta) + " " + GetDato(horaMulta));
+      if (DateTime.TryParse(GetDato(fechaMulta) + " " + GetDato(horaMulta), out DateTime fechaHora))
+        return fechaHora;
+      throw new Exception("No se pudo recuperar la fecha");
     }
 
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(200.939245, 338.691368, 284.913854, 351.068793);
-      return Convert.ToDecimal(GetDato(rec_importe));
+      if (decimal.TryParse(GetDato(rec_importe), out decimal importe))
+        return importe;
+      throw new Exception("No se pudo recuperar el importe");
     }
 
     public string GetLugarMulta()
@@ -67,7 +70,7 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetModeloVehiculo()
     {
       var rec_marca = new PdfRectangle(124.087482, 483.469738, 520.342671, 494.721943);
-      return string.Join(" ",GetDato(rec_marca).Split(" ").Skip(1));
+      return string.Join(" ", GetDato(rec_marca).Split(" ").Skip(1));
     }
 
     public string GetMotivoMulta()
@@ -85,6 +88,6 @@ namespace MultasExporter.Extractores.DeTexto
 
     }
 
-  
+
   }
 }

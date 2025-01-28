@@ -35,13 +35,18 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_hora = new PdfRectangle(205.27374, 497.216716, 262.623095, 512.76234);
       var fecha = GetDato(rec_fecha).Replace(".", "/");
       var hora = GetDato(rec_hora);
-      return Convert.ToDateTime(fecha + " " + hora);
+      if (DateTime.TryParse(fecha + " " + hora, out DateTime fechaHora))
+        return fechaHora;
+
+      throw new Exception("No se ha podido recuperar la fecha");
     }
 
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(491.764362, 359.631274, 541.987105, 377.420988);
-      return Convert.ToDecimal(GetDato(rec_importe));
+      if (decimal.TryParse(GetDato(rec_importe), out decimal importe))
+        return importe;
+      throw new Exception("No se ha podido recuperar el importe");  
     }
 
     public string GetLugarMulta()

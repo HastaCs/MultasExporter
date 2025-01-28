@@ -35,7 +35,9 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_hora = new PdfRectangle(200.25, 669.75, 223.25, 679.75);
       var fecha = GetDato(rec_fecha);
       var hora = GetDato(rec_hora);
-      return Convert.ToDateTime(fecha + " " + hora);
+      if (DateTime.TryParse(fecha + " " + hora, out DateTime fechaHora))
+        return fechaHora;
+      throw new Exception("No se pudo recuperar la fecha");
     }
 
     public decimal GetImporte()
@@ -44,7 +46,10 @@ namespace MultasExporter.Extractores.DeTexto
       var motivo = GetDato(rec_motivoimporte);
       var palabraClave = "SANCIÓN PROPUESTA:";
       var indice = motivo.IndexOf(palabraClave);
-      return Convert.ToDecimal(motivo.Substring(indice + palabraClave.Length));
+      if (decimal.TryParse(motivo.Substring(indice + palabraClave.Length), out decimal importe))
+        return importe;
+
+      throw new Exception("No se pudo recuperar el importe");
     }
 
     public string GetLugarMulta()
@@ -78,7 +83,7 @@ namespace MultasExporter.Extractores.DeTexto
       var motivo = GetDato(rec_motivoyimporte);
       var palabraClave = "NORMATIVA APLICABLE";
       var termina = motivo.IndexOf(palabraClave);
-      string resultado = motivo.Substring(0, termina ).Replace("HECHO DENUNCIADO:","");
+      string resultado = motivo.Substring(0, termina).Replace("HECHO DENUNCIADO:", "");
       return resultado;
 
     }

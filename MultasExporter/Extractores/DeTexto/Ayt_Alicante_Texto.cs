@@ -37,7 +37,9 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_hora = new PdfRectangle(177.719996, 572.72002, 300.719996, 589.160987);
       var fecha =GetDato(rec_fecha);
       var hora = GetDato(rec_hora);
-      return Convert.ToDateTime(fecha+" "+hora);
+      if (DateTime.TryParse(fecha + " " + hora, out DateTime fechaHora))
+        return fechaHora;
+      throw new Exception("No se pudo recuperar la fecha");
     
     }
 
@@ -45,7 +47,9 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var rec_importe = new PdfRectangle(300, 545.72002, 414.72002, 562.052531);
       var importe = GetDato(rec_importe).Replace("Eur","");
-      return Convert.ToDecimal(importe);
+      if (Decimal.TryParse(importe, out decimal importeRes))
+        return importeRes;
+      throw new Exception("No se pudo recuperar el importe");
     }
 
     public string GetLugarMulta()
@@ -63,7 +67,10 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetMatricula()
     {
       var rec_matricula = new PdfRectangle(53.160199, 599.72002, 175.856755, 615.439991);
-      return GetDato(rec_matricula).Replace("-","");
+      var matricula= GetDato(rec_matricula).Replace("-","");
+      if (string.IsNullOrEmpty(matricula))
+        throw new Exception("No se pudo recuperar la matricula");
+      return matricula;
     }
 
     public string GetModeloVehiculo()

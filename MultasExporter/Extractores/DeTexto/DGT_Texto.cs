@@ -35,16 +35,19 @@ namespace MultasExporter.Extractores.DeTexto
     public DateTime GetFechaMulta()
     {
       var rec_fecha = new PdfRectangle(454.404537, 691.922286, 536.914195, 713.730958);
-      var fecha = DateTime.ParseExact(GetDato(rec_fecha).Trim(), "dd/MM/yyyy - HH:mm'h'", CultureInfo.InvariantCulture);
-      return fecha;
+      if(DateTime.TryParseExact(GetDato(rec_fecha).Trim(), "dd/MM/yyyy - HH:mm'h'", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
+        return fecha;
+
+      throw new Exception("No se pudo recuperar la fecha"); 
     }
 
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(181.086957, 680.726058, 240.849325, 693.102896);
       var importe = GetDato(rec_importe).Replace("€", "");
-      decimal result = decimal.Parse(importe, CultureInfo.InvariantCulture);
-      return result;
+      if (decimal.TryParse(importe, CultureInfo.InvariantCulture,out decimal result))
+        return result;
+     throw new Exception("No se pudo recuperar el importe");
     }
 
     public string GetLugarMulta()
