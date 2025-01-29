@@ -66,7 +66,7 @@ namespace MultasExporter
 
       var extractor = DeterminarExtractor(multaFichero);
       if (extractor == null)
-        throw new Exception("No se ha encontrado ningun extractor");
+        throw new Exception("No se ha podido detectar el formato");
       Console.WriteLine("Encontrado: " + extractor.GetType());
       _extractorMulta = extractor;
     }

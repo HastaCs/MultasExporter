@@ -33,7 +33,7 @@ namespace API
         options.SupportedCultures = new[] { new CultureInfo("es-ES") };
         options.SupportedUICultures = new[] { new CultureInfo("es-ES") };
       });
-
+     
 
       var app = builder.Build();
 
@@ -58,7 +58,7 @@ namespace API
 
         await next.Invoke();
       });
-      app.UseHttpsRedirection();
+     // app.UseHttpsRedirection();
 
       app.UseAuthorization();
 
