@@ -130,14 +130,14 @@ namespace MultasConsola
       watch.Start();
       Console.WriteLine(DateTime.Now);
     //  Console.OutputEncoding = Encoding.UTF8;
-      string folderPath = @"C:\Users\jorge\Downloads";
+      string folderPath = @"D:\pdfsMultas\rectangulos";
     
      var files = Directory.GetFiles(folderPath).Where(x => x.EndsWith(".pdf"));
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
        await SacaRectangulos(file,1);
-     //  GuardaImagen(file, $"C:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
+      // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
       //await ProcesaPdf(folderPath, file);
       }
       watch.Stop();

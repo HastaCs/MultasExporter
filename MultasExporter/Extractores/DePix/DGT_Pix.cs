@@ -18,7 +18,9 @@ namespace MultasExporter.Extractores.DePix
     public bool Match()
     {
       var ayto = new Rect(225, 383, 774, 57);
-      return GetDato(ayto).ToUpper() == "CENTRO DE TRATAMIENTO DE DENUNCIAS AUTOMATIZADAS";
+      var puntos = new Rect(384, 1550, 458, 72);
+      var datoPts = GetDato(puntos);
+      return GetDato(ayto).ToUpper() == "CENTRO DE TRATAMIENTO DE DENUNCIAS AUTOMATIZADAS" && datoPts.ToLower().Contains("no lleva aparejada");
     }
 
 
