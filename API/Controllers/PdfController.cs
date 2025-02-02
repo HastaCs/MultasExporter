@@ -43,7 +43,7 @@ namespace API.Controllers
       }
       catch (Exception er)
       {
-        return UnprocessableEntity(new { error = er.Message });
+        return BadRequest(new { error = er.Message });
 
       }
     }

@@ -12,55 +12,15 @@ using UglyToad.PdfPig;
 //TODO Manejar errores problemdetails en el api
 namespace MultasExporter
 {
-  public enum Emisor
-  {
-
-    [Display(Name = "(DGT)Centro de tratamiento de denuncias automatizadas")]
-    Dgt = 4,
-
-    [Display(Name = "Ayuntamiento de Alicante")]
-    AytoAlicante=16,
-
-    [Display(Name = "Ayuntamiento de Granada")]
-    AytoGranada=14,
-
-    [Display(Name = "Ayuntamiento de Valencia")]
-    AytoValencia=47,
-
-    [Display(Name = "Diputación provincial de Málaga")]
-    DipMalaga=50,
-
-    [Display(Name = "Diputación provincial de Cádiz")]
-    DipCadiz=37,
-
-    [Display(Name = "Suma Diputación de Alicante")]
-    SumaAlicante=8,
-
-    [Display(Name = "Ayuntamiento de Madrid")]
-    AytoMadrid=42,
-
-    [Display(Name = "Ayuntamiento de Fuengirola")]
-    AytoFuengirola=21,
-
-    [Display(Name = "Ayuntamiento de Ibiza")]
-    AytoIbiza=51,
-
-    [Display(Name = "Ayuntamiento de Cádiz")]
-    AytoCadiz=65,
-
-    [Display(Name = "Ayuntamiento de Murcia")]
-    AytoMurcia=56,
-    [Display(Name = "Ayuntamiento de Sevilla")]
-    AytoSevilla = 46
-  }
+ 
   /// <summary>
   /// Clase principal del proyecto, que usa IMULTA para recuperar los datos
   /// </summary>
   public class ExtractorMulta
   {
     private IDatos _extractorMulta { get; set; }
-    private List<IExtractorPix> _extractoresPdf = new List<IExtractorPix> { new DGT_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Fuengirola_Pix(), new DGT2_Pix(), new Ayt_Ibiza_Pix(), new Ayt_Cadiz_Pix() ,new Ayt_Murcia_Pix()};
-    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(),new DGTPuntos_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(), new Ayt_Alicante_Texto(), new Ayt_Granada_Texto(), new Dip_Cadiz_Texto(), new Ayt_Madrid_Texto(), new Ayt_Fuengirola_Texto(), new DGT2_Texto(), new Ayt_Ibiza_Texto(), new Ayt_Cadiz_Texto(),new Ayt_Murcia_Texto(),new Ayt_Sevilla_Texto(),new Ayt_Sevilla2_Texto() };
+    private List<IExtractorPix> _extractoresPdf = new List<IExtractorPix> { new DGT_Pix(), new DGTPuntos_Pix(), new Ayt_Alicante_Pix(), new Ayt_Valencia_Pix(), new Dip_Malaga_Pix(), new Dip_Cadiz_Pix(), new Suma_Alicante_Pix(), new Ayt_Granada_Pix(), new Ayt_Fuengirola_Pix(), new DGT2_Pix(), new Ayt_Ibiza_Pix(), new Ayt_Cadiz_Pix(), new Ayt_Murcia_Pix() };
+    private List<IExtractorTexto> _extractoresText = new List<IExtractorTexto> { new Dip_Malaga_Texto(), new DGT_Texto(), new DGTPuntos_Texto(), new Suma_Alicante_Texto(), new Ayt_Valencia_Texto(), new Ayt_Alicante_Texto(), new Ayt_Granada_Texto(), new Dip_Cadiz_Texto(), new Ayt_Madrid_Texto(), new Ayt_Fuengirola_Texto(), new DGT2_Texto(), new Ayt_Ibiza_Texto(), new Ayt_Cadiz_Texto(), new Ayt_Murcia_Texto(), new Ayt_Sevilla_Texto(), new Ayt_Sevilla2_Texto() };
     public ExtractorMulta(byte[] multaFichero)
     {
 
@@ -88,7 +48,7 @@ namespace MultasExporter
       var i = 0;
       foreach (var extractor in extractores)
       {
-       
+
 
         var task = Task.Run(async () =>
         {

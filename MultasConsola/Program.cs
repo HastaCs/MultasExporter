@@ -136,8 +136,8 @@ namespace MultasConsola
      // await ProcesarArchivosAsync(folderPath, files);
       foreach (var file in files)
       {
-       await SacaRectangulos(file,1);
-      // GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
+     //  await SacaRectangulos(file,1);
+       GuardaImagen(file, $"D:/pdfsMultas/imagenes/{Path.GetFileName(file)}.png",1);
       //await ProcesaPdf(folderPath, file);
       }
       watch.Stop();

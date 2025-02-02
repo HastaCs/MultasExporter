@@ -31,7 +31,6 @@ namespace MultasExporter.Extractores.DePix
     }
 
 
-
     public string GetExpediente()
     {
       var recExpediente = new Rect(500, 544, 358, 62);
