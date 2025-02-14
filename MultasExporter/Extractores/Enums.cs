@@ -23,7 +23,7 @@ namespace MultasExporter
     AytoValencia = 47,
 
     [Display(Name = "Diputación provincial de Málaga")]
-    DipMalaga = 50,
+    DipMalaga = 6,
 
     [Display(Name = "Diputación provincial de Cádiz")]
     DipCadiz = 37,
