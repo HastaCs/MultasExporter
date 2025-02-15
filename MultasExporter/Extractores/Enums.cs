@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MultasExporter
 {
@@ -45,7 +46,17 @@ namespace MultasExporter
 
     [Display(Name = "Ayuntamiento de Murcia")]
     AytoMurcia = 56,
+
     [Display(Name = "Ayuntamiento de Sevilla")]
-    AytoSevilla = 46
+    AytoSevilla = 46,
+
+    [Display(Name = "Ayuntamiento de Córdoba")]
+    AytoCordoba = 104,
+
+    [Display(Name = "Ayuntamiento de Málaga")]
+    AytoMalaga = 50,
+
+    [Display(Name = "Agencia tributaria Illes Balears")]
+    Atib = 140
   }
 }

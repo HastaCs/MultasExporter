@@ -27,14 +27,14 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetExpediente()
     {
       var rec_expediente = new PdfRectangle(21.600001, 682.770458, 149.040006, 709.983588);
-      var expediente = GetDato(rec_expediente);
+      var expediente = GetDatos(rec_expediente);
       return expediente;
     }
 
     public DateTime GetFechaMulta()
     {
       var rec_fecha = new PdfRectangle(297.6, 779.411958, 435.146219, 816.045018);
-      if (DateTime.TryParse(GetDato(rec_fecha).Replace("DE APERTURA DEL EXPEDIENTE", ""), out DateTime fecha))
+      if (DateTime.TryParse(GetDatos(rec_fecha).Replace("DE APERTURA DEL EXPEDIENTE", ""), out DateTime fecha))
         return fecha;
       throw new Exception("No se pudo recuperar la fecha");
     }
@@ -42,7 +42,7 @@ namespace MultasExporter.Extractores.DeTexto
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(296.599664, 700.912544, 392.631933, 731.614537);
-      if (decimal.TryParse(GetDato(rec_importe), out decimal importe))
+      if (decimal.TryParse(GetDatos(rec_importe), out decimal importe))
         return importe;
       throw new Exception("No se pudo recuperar el importe");
     }
@@ -50,7 +50,7 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetLugarMulta()
     {
       var rec_lugar = new PdfRectangle(25.920001, 713.123564, 276, 742.581126);
-      var lugar = GetDato(rec_lugar);
+      var lugar = GetDatos(rec_lugar);
       return lugar;
     }
 
@@ -62,7 +62,7 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetMatricula()
     {
       var rec_matricula = new PdfRectangle(26.400002, 742.081126, 276.720002, 775.225323);
-      var mat = GetDato(rec_matricula).Split(" ")[0];
+      var mat = GetDatos(rec_matricula).Split(" ")[0];
       return mat;
     }
 
@@ -74,16 +74,16 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetMotivoMulta()
     {
       var rec_motivo = new PdfRectangle(26.508908, 625.901993, 276.092774, 682.421571);
-      return GetDato(rec_motivo);
+      return GetDatos(rec_motivo);
 
     }
 
     public bool Match()
     {
       var rec_match = new PdfRectangle(11.503866, 818.400025, 90.030253, 847.310191);
-      var match = GetDato(rec_match);
+      var match = GetDatos(rec_match);
       var rec_match2 = new PdfRectangle(74.344696, 843.224609, 446.953156, 876.865051);
-      var match2 = GetDato(rec_match2);
+      var match2 = GetDatos(rec_match2);
 
       return match == "MADRID" && match2== "Denuncia por infracción de circulación. Multa";
     }

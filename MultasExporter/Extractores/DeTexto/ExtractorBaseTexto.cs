@@ -20,7 +20,7 @@ namespace MultasExporter.Extractores.DeWords
       _palabras = palabras;
     }
        
-    public string GetDato(PdfRectangle rect)
+    public string GetDatos(PdfRectangle rect)
     {
       var palabras = _palabras.Where(word =>
                       word.BoundingBox.BottomLeft.X >= rect.BottomLeft.X &&

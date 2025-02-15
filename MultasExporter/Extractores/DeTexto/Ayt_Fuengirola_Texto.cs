@@ -28,13 +28,13 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetExpediente()
     {
       var rec_expediente = new PdfRectangle(93.165159, 752.572205, 163.998594, 774.552756);
-      return GetDato(rec_expediente);
+      return GetDatos(rec_expediente);
     }
 
     public DateTime GetFechaMulta()
     {
       var rec_fecha = new PdfRectangle(488.855381, 770.017087, 565.05, 784.56);
-            var fecha = GetDato(rec_fecha);
+            var fecha = GetDatos(rec_fecha);
       if(DateTime.TryParse(fecha, out DateTime fechaRes))
         return fechaRes;
       throw new Exception("No se ha podido recuperar la fecha");
@@ -43,7 +43,7 @@ namespace MultasExporter.Extractores.DeTexto
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(471.408723, 724.311497, 562.131349, 739.314095);
-      var importe = GetDato(rec_importe).Replace("€", "");
+      var importe = GetDatos(rec_importe).Replace("€", "");
       if(decimal.TryParse(importe, out decimal importeRes))
         return importeRes;
       throw new Exception("No se ha podido recuperar el importe");
@@ -53,38 +53,38 @@ namespace MultasExporter.Extractores.DeTexto
     public string GetLugarMulta()
     {
       var rec_lugar = new PdfRectangle(101.539555, 709.657796, 287.172005, 726.404882);
-      return GetDato(rec_lugar);
+      return GetDatos(rec_lugar);
 
     }
 
     public string GetMarcaVehiculo()
     {
       var rec_marca = new PdfRectangle(224.364033, 737.220709, 436.515405, 751.87441);
-      return GetDato(rec_marca).Split("-")[0].Trim();
+      return GetDatos(rec_marca).Split("-")[0].Trim();
     }
 
     public string GetMatricula()
     {
       var rec_matricula = new PdfRectangle(92.118359, 737.220709, 159.462462, 753.072205);
-      return GetDato(rec_matricula);
+      return GetDatos(rec_matricula);
     }
 
     public string GetModeloVehiculo()
     {
       var rec_marca = new PdfRectangle(224.364033, 737.220709, 436.515405, 751.87441);
-      return string.Join(" ",GetDato(rec_marca).Split("-").Skip(1));
+      return string.Join(" ",GetDatos(rec_marca).Split("-").Skip(1));
     }
 
     public string GetMotivoMulta()
     {
       var rec_motivo = new PdfRectangle(109.565018, 698.841969, 565.05, 712.797875);
-      return GetDato(rec_motivo);
+      return GetDatos(rec_motivo);
     }
 
     public bool Match()
     {
       var rec_match = new PdfRectangle(93.514092, 770.365985, 274.610411, 784.56);
-      var match = GetDato(rec_match);
+      var match = GetDatos(rec_match);
       return match == "Ayuntamiento de Fuengirola";
     }
   }

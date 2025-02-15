@@ -74,7 +74,7 @@ namespace MultasExporter.Extractores.DePix
       var rec = new Rect(524, 1445, 1637, 54);
       return string.Join(" ", GetDato(rec).Split(" ").Skip(1));
     }
-    //TODO revisar esto un poco
+    
     public string GetMotivoMulta()
     {
       var rec = new Rect(305, 1583, 1741, 124);
