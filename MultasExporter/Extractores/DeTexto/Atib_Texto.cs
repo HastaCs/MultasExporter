@@ -42,7 +42,7 @@ namespace MultasExporter.Extractores.DeTexto
     public decimal GetImporte()
     {
       var rec_importe = new PdfRectangle(427.125, 681.5625, 487.125, 693.75);
-      var importe = GetDatos(rec_importe).Replace(".", ",");
+      var importe = GetDatos(rec_importe).Replace(".", ",").Replace("€","");
 
       if (decimal.TryParse(importe, out decimal importeRes))
         return importeRes;
