@@ -57,6 +57,12 @@ namespace MultasExporter
     AytoMalaga = 50,
 
     [Display(Name = "Agencia tributaria Illes Balears")]
-    Atib = 140
+    Atib = 140,
+
+    [Display(Name = "Ports Balears")]
+    PortsBalears = 87,
+
+    [Display(Name = "Servei catalá de Tránsit")]
+    ServeiCatalaTransit = 11
   }
 }
