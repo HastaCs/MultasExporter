@@ -41,11 +41,22 @@ namespace MultasExporter.Extractores.DeTexto
 
     public decimal GetImporte()
     {
-      var rec_importe = new PdfRectangle(427.125, 681.5625, 487.125, 693.75);
-      var importe = GetDatos(rec_importe).Replace(".", ",").Replace("€","");
+      var rec_importe = new PdfRectangle(392.56033, 664.546817, 554.841966, 699.246255);
+            var importeTexto = GetDatos(rec_importe).Replace(".", ",");
 
-      if (decimal.TryParse(importe, out decimal importeRes))
-        return importeRes;
+      //Un regex para detectar un regex que sea un texto cualquiera seguido de un espacio en blanco y el simbolo €
+      var regex = new System.Text.RegularExpressions.Regex(@"\w+\s€");
+
+      var match = regex.Match(importeTexto);
+      if (match != null)
+      {
+        //coge la palabra justo anterior al simbolo €
+        var importe = match.Value.Split(" ")[0];
+        if (decimal.TryParse(importe, out decimal importeRes))
+          return importeRes;
+      }
+
+
       throw new Exception("No se ha podido recuperar el importe");
     }
 
@@ -85,8 +96,12 @@ namespace MultasExporter.Extractores.DeTexto
     {
 
       var rec_match = new PdfRectangle(296.87375, 304.233459, 550.285463, 414.991261);
+      var rec_match2 = new PdfRectangle(107, 799.26276, 519.5, 826.7546);
+
       var match = GetDatos(rec_match);
-      return match.Contains("www.atib.es");
+      var match2 = GetDatos(rec_match2);
+
+      return match.Contains("www.atib.es") && match2.Contains("REQUERIMENT D'IDENTIFICACIÓ DEL CONDUCTOR RESPONSABLE DE LA INFRACCIÓ");
     }
   }
 }
