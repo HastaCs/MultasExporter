@@ -80,12 +80,14 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_motivo = new PdfRectangle(109.565018, 698.841969, 565.05, 712.797875);
       return GetDatos(rec_motivo);
     }
-
+    //Algunos de Fuengirola el n. expediente ocupa dos lineas y esta un peli desplazado
     public bool Match()
     {
       var rec_match = new PdfRectangle(93.514092, 770.365985, 274.610411, 784.56);
       var match = GetDatos(rec_match);
-      return match == "Ayuntamiento de Fuengirola";
+      var rec_match2=new PdfRectangle(32.2584, 739.13817, 93.774418, 750.013364);
+      var match2 = GetDatos(rec_match2);
+      return match == "Ayuntamiento de Fuengirola" && match2=="Matrícula";
     }
   }
 }
