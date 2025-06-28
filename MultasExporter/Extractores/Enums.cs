@@ -63,6 +63,9 @@ namespace MultasExporter
     PortsBalears = 87,
 
     [Display(Name = "Servei catalá de Tránsit")]
-    ServeiCatalaTransit = 11
+    ServeiCatalaTransit = 11,
+
+    [Display(Name = "Diputación de Sevilla")]
+    DipSevilla = 124,
   }
 }
