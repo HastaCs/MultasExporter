@@ -67,5 +67,11 @@ namespace MultasExporter
 
     [Display(Name = "Diputación de Sevilla")]
     DipSevilla = 124,
+
+    [Display(Name = "Ayuntamiento de Almería")]
+    AytoAlmeria = 125,
+
+    [Display(Name = "Ayuntamiento de Cartagena")]
+    AytoCartagena = 45
   }
 }
