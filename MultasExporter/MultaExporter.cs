@@ -135,8 +135,18 @@ namespace MultasExporter
         }
 
       }
+      //Tamaño en bytes de multaFichero
+      Console.WriteLine("No se ha encontrado ningun extractor de texto, buscando por OCR");
+      Console.WriteLine("Tamaño del PDF: " + multaFichero.Length + " bytes");
+
+
+
+
       //Si no encuentra ninguno de texto, transforma en imagen y busca
       byte[] pngByte = Freeware.Pdf2Png.Convert(multaFichero, 1);
+
+      //Tamaño en bytes de la imagen
+      Console.WriteLine("Tamaño de la imagen: " + pngByte.Length + " bytes");
 
       var pix = Pix.LoadFromMemory(pngByte);
 

@@ -17,7 +17,7 @@ namespace API.Controllers
       try
       {
 
-       
+
         // Verifica si el archivo PDF fue proporcionado
         if (pdf == null || pdf.Length == 0)
         {
@@ -36,13 +36,14 @@ namespace API.Controllers
           await pdf.CopyToAsync(memoryStream);
           fileBytes = memoryStream.ToArray();
         }
-       
+
         var extractor = new ExtractorMulta(fileBytes);
-       
+
         return Ok(new { info = await extractor.GetDatosAsync() });
       }
       catch (Exception er)
       {
+        Console.WriteLine(er.ToString());
         return BadRequest(new { error = er.Message });
 
       }
@@ -80,7 +81,7 @@ namespace API.Controllers
           var res = new ExtractorMulta(multa.Contenido);
           var datosMulta = await res.GetDatosAsync();
 
-          multasBien.Add(new MultaDTOZip(multa.NombreFichero,datosMulta));
+          multasBien.Add(new MultaDTOZip(multa.NombreFichero, datosMulta));
         }
         catch (Exception er)
         {

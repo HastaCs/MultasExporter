@@ -6,16 +6,24 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Paquetes NuGet -->
   <ItemGroup>
     <PackageReference Include="Freeware.Pdf2Png" Version="1.0.1" />
     <PackageReference Include="PdfPig" Version="0.1.9" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
 
+  <!-- Copiar los archivos tessdata -->
   <ItemGroup>
     <None Update="tessdata\spa.traineddata">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <!-- Eliminar referencias a DLLs de Windows -->
+  <ItemGroup>
+    <None Remove="C:\Users\elfla\.nuget\packages\tesseract\5.2.0\**\*.dll" />
+    <EmbeddedResource Remove="C:\Users\elfla\.nuget\packages\tesseract\5.2.0\**\*.dll" />
   </ItemGroup>
 
 </Project>
