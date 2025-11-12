@@ -43,6 +43,8 @@ namespace MultasExporter.Extractores.DeTexto
       if (DateTime.TryParseExact(fechaText, "dd/MM/yyyy - HH:mm'h'", CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
         return fecha;
 
+     
+
       throw new Exception("No se pudo recuperar la fecha"); 
     }
 

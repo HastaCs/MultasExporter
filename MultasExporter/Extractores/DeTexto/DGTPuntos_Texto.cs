@@ -36,6 +36,11 @@ namespace MultasExporter.Extractores.DeTexto
       var rec_fecha = new PdfRectangle(452, 691, 540, 716);
       if (DateTime.TryParseExact(GetDatos(rec_fecha).Trim(), "dd/MM/yyyy - HH:mm'h'", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
         return fecha;
+      rec_fecha = new PdfRectangle(446.067932, 694.568094, 536.738067, 713.497623);
+     
+      if (DateTime.TryParseExact(GetDatos(rec_fecha).Trim(), "dd/MM/yyyy - HH:mm'h'", CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
+        return fecha;
+
 
       throw new Exception("No se pudo recuperar la fecha");
     }
