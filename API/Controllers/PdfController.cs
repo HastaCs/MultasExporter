@@ -4,6 +4,7 @@ using MultasApi.Modelos;
 using MultasExporter;
 using MultasExporter.Modelos;
 using System.Text.Unicode;
+using API.Services;
 
 namespace API.Controllers
 {
@@ -11,6 +12,13 @@ namespace API.Controllers
   [ApiController]
   public class PdfController : ControllerBase
   {
+    private readonly RateLimitService _rateLimitService;
+
+    public PdfController(RateLimitService rateLimitService)
+    {
+      _rateLimitService = rateLimitService;
+    }
+
     [HttpPost("upload")]
     public async Task<IActionResult> UploadPdf(IFormFile pdf, [FromForm] string key)
     {
@@ -46,6 +54,48 @@ namespace API.Controllers
         Console.WriteLine(er.ToString());
         return BadRequest(new { error = er.Message });
 
+      }
+    }
+
+    [HttpPost("uploadfromweb")]
+    public async Task<IActionResult> UploadPdfFromWeb(IFormFile pdf)
+    {
+      try
+      {
+        // Obtener la IP del cliente
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        if (string.IsNullOrEmpty(ipAddress))
+        {
+          return BadRequest("No se pudo identificar la dirección IP.");
+        }
+
+        // Verificar el límite de peticiones
+        if (!_rateLimitService.IsAllowed(ipAddress))
+        {
+          return StatusCode(429, new { error = "Has excedido el límite de 10 peticiones por día. Intenta de nuevo mañana." });
+        }
+
+        // Verifica si el archivo PDF fue proporcionado
+        if (pdf == null || pdf.Length == 0)
+        {
+          return BadRequest("No se proporcionó un archivo PDF.");
+        }
+
+        byte[] fileBytes;
+        using (var memoryStream = new MemoryStream())
+        {
+          await pdf.CopyToAsync(memoryStream);
+          fileBytes = memoryStream.ToArray();
+        }
+
+        var extractor = new ExtractorMulta(fileBytes);
+
+        return Ok(new { info = await extractor.GetDatosAsync(), remainingRequests = _rateLimitService.GetRemainingRequests(ipAddress) });
+      }
+      catch (Exception er)
+      {
+        Console.WriteLine(er.ToString());
+        return BadRequest(new { error = er.Message });
       }
     }
 

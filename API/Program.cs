@@ -1,8 +1,8 @@
-
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Diagnostics;
 using System.Globalization;
+using API.Services;
 
 namespace API
 {
@@ -27,6 +27,19 @@ namespace API
       // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
       builder.Services.AddEndpointsApiExplorer();
       builder.Services.AddSwaggerGen();
+      builder.Services.AddSingleton<RateLimitService>();
+      
+      // Configuración de CORS
+      builder.Services.AddCors(options =>
+      {
+        options.AddPolicy("AllowAll", policy =>
+        {
+          policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+      });
+      
       builder.Services.Configure<RequestLocalizationOptions>(options =>
       {
         options.DefaultRequestCulture = new RequestCulture("es-ES");
@@ -59,6 +72,9 @@ namespace API
         await next.Invoke();
       });
      // app.UseHttpsRedirection();
+
+      // Habilitar CORS
+      app.UseCors("AllowAll");
 
       app.UseAuthorization();
 
