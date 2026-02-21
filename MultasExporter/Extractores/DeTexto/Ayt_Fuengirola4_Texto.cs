@@ -46,6 +46,9 @@ namespace MultasExporter.Extractores.DeTexto
       var importe = GetDatos(rec_importe).Replace("€", "");
       if (decimal.TryParse(importe, out decimal importeRes))
         return importeRes;
+
+      return 0;
+
       throw new Exception("No se ha podido recuperar el importe");
 
     }
@@ -85,10 +88,12 @@ namespace MultasExporter.Extractores.DeTexto
     {
       var rec_match1 = new PdfRectangle(472.247965, 760.138544, 560.771015, 784.138972);
       var rec_match2 = new PdfRectangle(88.52305, 803.639319, 387.475892, 819.764606);
-
+      var rec_match3= new PdfRectangle(41.484669, 659.413843, 117.456592, 673.911948);
       var match = GetDatos(rec_match1);
       var match2 = GetDatos(rec_match2);
-      return match == "Ayuntamiento de Fuengirola" && match2 == "REQUERIMIENTO DE IDENTIFICACIÓN DE INFRACTOR";
+      var match3 = GetDatos(rec_match3);
+      return match == "Ayuntamiento de Fuengirola" && match2 == "REQUERIMIENTO DE IDENTIFICACIÓN DE INFRACTOR"
+              && match3 == "Velocidad";
     }
   }
 }
