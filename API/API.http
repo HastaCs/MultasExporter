@@ -1,0 +1,29 @@
+@API_HostAddress = http://localhost:5091
+
+### Subir un PDF de multa
+POST {{API_HostAddress}}/api/pdf/upload
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="pdf"; filename="multa.pdf"
+Content-Type: application/pdf
+
+< ./multa.pdf
+--Boundary--
+
+### Subir un ZIP con varios PDFs
+POST {{API_HostAddress}}/api/pdf/uploadzip
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="zip"; filename="multas.zip"
+Content-Type: application/zip
+
+< ./multas.zip
+--Boundary--
+
+### Ping
+GET {{API_HostAddress}}/api/pdf/ping
+Accept: application/json
+
+###
