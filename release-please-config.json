@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "simple",
+  "changelog-sections": [
+    { "type": "feat", "section": "🚀 Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "refactor", "section": "♻️ Code Refactoring" },
+    { "type": "docs", "section": "📝 Documentation" },
+    { "type": "style", "section": "💄 Styles" },
+    { "type": "test", "section": "✅ Tests" },
+    { "type": "build", "section": "📦 Build System" },
+    { "type": "revert", "section": "⏪ Reverts" },
+    { "type": "ci", "section": "🤖 Continuous Integration", "hidden": true },
+    { "type": "chore", "section": "🧹 Miscellaneous Chores", "hidden": true }
+  ],
+  "packages": {
+    ".": {
+      "package-name": "multas-exporter",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": false,
+      "pull-request-header": "## 🤖 Release Please\n\n¡Esta PR fue generada automáticamente! ✨ Actualiza la versión, el `CHANGELOG.md` y `Directory.Build.props`.",
+      "pull-request-footer": "🍀 *Generado automáticamente por [Release Please](https://github.com/googleapis/release-please)* — no editar a mano.",
+      "extra-files": [
+        {
+          "type": "xml",
+          "path": "Directory.Build.props",
+          "xpath": "//Project/PropertyGroup/Version"
+        }
+      ]
+    }
+  }
+}
