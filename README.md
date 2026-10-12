@@ -4,7 +4,8 @@
 [![C#](https://img.shields.io/badge/C%23-239120?logo=csharp&logoColor=white)](https://learn.microsoft.com/dotnet/csharp/)
 [![Platform](https://img.shields.io/badge/platform-linux%20%7C%20windows%20%7C%20docker-lightgrey)](#docker)
 [![Demo](https://img.shields.io/badge/demo-online-brightgreen)](https://www.multasproapi.com/probar-api/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#crear-un-nuevo-extractor)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Lector de PDFs de **multas de tráfico (denuncias sancionadoras)** que extrae los datos y los
 devuelve como **JSON**. Soporta documentos emitidos por distintos organismos (DGT, ayuntamientos,
@@ -351,8 +352,15 @@ Si no se indica carpeta, usa el directorio de trabajo actual.
 ## Docker
 
 ```bash
-docker build -t multasexporter .
-docker run -p 8080:8080 multasexporter
+docker build -t gorerecord/multasapi .
+docker run -p 8080:8080 gorerecord/multasapi
+```
+
+O directamente desde Docker Hub:
+
+```bash
+docker pull gorerecord/multasapi:latest
+docker run -p 8080:8080 gorerecord/multasapi:latest
 ```
 
 La API queda accesible en `http://localhost:8080`.
@@ -383,3 +391,11 @@ API/
 - No procesa PDFs escaneados (OCR deshabilitado).
 - El límite de peticiones de `uploadfromweb` es **en memoria**: se reinicia con la aplicación y
   no se comparte entre instancias.
+
+## 🤝 Contribuir
+
+¿Quieres añadir un extractor nuevo? Lee la guía en [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE).
